@@ -6,6 +6,8 @@ module.exports = {
       colors: {
         primary: "#5D2E8C",
         secondary: "#FFF628",
+        tertiary: "",
+        white: "#FEF7F7",
       },
       fontFamily: {
         pregular: ["Luckiest Guy"],

@@ -1,4 +1,4 @@
-import { Image, View, Text } from "react-native";
+import { Image, View } from "react-native";
 import React from "react";
 import { Tabs, Redirect } from "expo-router";
 import icons from "../../constants/icons";
@@ -20,14 +20,16 @@ const TabsLayout = () => {
     <>
       <Tabs
         screenOptions={{
+          headerShown: false, // Posizionato correttamente qui
           tabBarStyle: {
             backgroundColor: "#5D2E8C",
             height: 70,
+            // headerShown: false, // Rimosso da qui
           },
         }}
       >
         <Tabs.Screen
-          name="gattohome"
+          name="Gattohome"
           options={{
             title: "GattoHome",
             headerShown: false,
@@ -42,9 +44,9 @@ const TabsLayout = () => {
           }}
         />
         <Tabs.Screen
-          name="Potenziamenti"
+          name="Upgrade"
           options={{
-            title: "Potenziamenti",
+            title: "Upgrade",
             headerShown: false,
             tabBarLabel: () => null,
             tabBarIcon: ({ focused }) => (
@@ -72,9 +74,9 @@ const TabsLayout = () => {
           }}
         />
         <Tabs.Screen
-          name="rinascita"
+          name="Rinascita"
           options={{
-            title: "rinascita",
+            title: "Rinascita",
             headerShown: false,
             tabBarLabel: () => null,
             tabBarIcon: ({ focused }) => (

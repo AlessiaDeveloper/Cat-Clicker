@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const Potenziamenti = () => {
+const Upgrade = () => {
   return (
     <View>
-      <Text>Potenziamenti</Text>
+      <Text>Upgrade</Text>
     </View>
   );
 };
 
-export default Potenziamenti;
+export default Upgrade;
 
 const styles = StyleSheet.create({});
