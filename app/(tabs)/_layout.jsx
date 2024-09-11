@@ -20,20 +20,19 @@ const TabsLayout = () => {
     <>
       <Tabs
         screenOptions={{
-          headerShown: false, // Posizionato correttamente qui
+          tabBarShowLabel: false,
+          headerShown: false,
           tabBarStyle: {
             backgroundColor: "#5D2E8C",
-            height: 70,
-            // headerShown: false, // Rimosso da qui
+            height: 60,
           },
         }}
       >
         <Tabs.Screen
           name="Gattohome"
           options={{
-            title: "GattoHome",
-            headerShown: false,
             tabBarLabel: () => null,
+            headerShown: false,
             tabBarIcon: ({ focused }) => (
               <TabIcon
                 focusedIcon={icons.gattoIconSp}
@@ -46,9 +45,9 @@ const TabsLayout = () => {
         <Tabs.Screen
           name="Upgrade"
           options={{
-            title: "Upgrade",
-            headerShown: false,
             tabBarLabel: () => null,
+            headerShown: false,
+
             tabBarIcon: ({ focused }) => (
               <TabIcon
                 focusedIcon={icons.fulmineSp}
@@ -61,7 +60,6 @@ const TabsLayout = () => {
         <Tabs.Screen
           name="Shop"
           options={{
-            title: "Shop",
             headerShown: false,
             tabBarLabel: () => null,
             tabBarIcon: ({ focused }) => (
@@ -76,7 +74,6 @@ const TabsLayout = () => {
         <Tabs.Screen
           name="Rinascita"
           options={{
-            title: "Rinascita",
             headerShown: false,
             tabBarLabel: () => null,
             tabBarIcon: ({ focused }) => (

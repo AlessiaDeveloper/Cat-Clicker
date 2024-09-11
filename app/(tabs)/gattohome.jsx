@@ -9,7 +9,6 @@ import {
   Pressable,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
-import * as Font from "expo-font";
 import EdificiData from "../data/EdificiData";
 import ModalSettings from "../(modal)/ModalSettings";
 import ModalAchievment from "../(modal)/ModalAchievment";
