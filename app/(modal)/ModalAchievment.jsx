@@ -8,10 +8,37 @@ import {
   Image,
   Text,
   SafeAreaView,
+  FlatList,
+  StatusBar,
 } from "react-native";
+import Achievment from "../data/Achievment";
 
 export default function ModalAchievment() {
   const [modalVisible, setModalVisible] = useState(false);
+  const renderItem = ({ item }) => {
+    return (
+      <View className="flex flex-row border-2 border-primary p-4 bg-secondary items-center justify-between ">
+        <View className="flex-row flex-wrap w-full  justify-between items-center">
+          <Text className="font-pregular w-3/6 text-primary text-xs">
+            {item.name}
+          </Text>
+          <Pressable
+            className="flex-row flex-wrap justify-between items-center"
+            style={[styles.button, styles.buttonClose]}
+            onPress={() => setModalVisible(!modalVisible)}
+          >
+            <Text className="text-md font-pregular text-secondary">
+              8{" "}
+              <Image
+                style={styles.image}
+                source={require("../../assets/images/scatoletta.png")}
+              />
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+    );
+  };
   return (
     <View>
       <Modal
@@ -26,57 +53,15 @@ export default function ModalAchievment() {
       >
         <SafeAreaView style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text className="text-2xl font-pregular text-primary">
+            <Text className="text-2xl  my-5 font-pregular text-primary">
               LIst of Achievment
             </Text>
 
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text className="text-sm font-pregular text-white">
-                Compra il primo cat bistrot
-              </Text>
-              <Text className="text-lg font-pregular text-secondary">
-                8{" "}
-                <Image
-                  style={styles.image}
-                  source={require("../../assets/images/scatoletta.png")}
-                />
-              </Text>
-            </Pressable>
-
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text className="text-md font-pregular text-white">
-                Compra la prima red dot gym
-              </Text>
-              <Text className="text-lg font-pregular text-secondary">
-                8{" "}
-                <Image
-                  style={styles.image}
-                  source={require("../../assets/images/scatoletta.png")}
-                />
-              </Text>
-            </Pressable>
-
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text className="text-md font-pregular text-white">
-                Porta il bistrot a livello 5
-              </Text>
-              <Text className="text-lg font-pregular flex justify-end text-secondary">
-                8{" "}
-                <Image
-                  style={styles.image}
-                  source={require("../../assets/images/scatoletta.png")}
-                />
-              </Text>
-            </Pressable>
+            <FlatList
+              data={Achievment}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+            />
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
@@ -106,11 +91,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
   },
   modalView: {
     margin: 10,
     width: 300,
+    height: "70%",
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -125,9 +110,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    borderRadius: 20,
-    marginTop: 10,
+    borderRadius: 10,
     padding: 10,
+    marginTop: 5,
     alignItems: "center",
   },
   buttonOpen: {},
@@ -148,7 +133,7 @@ const styles = StyleSheet.create({
   icona: { width: 60, height: 60, top: -7 },
   image: {
     marginTop: 5,
-    width: 20,
-    height: 20,
+    width: 15,
+    height: 15,
   },
 });

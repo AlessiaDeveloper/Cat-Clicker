@@ -1,7 +1,7 @@
 export default Achievment = [
   {
     id: "1",
-    name: "Compra il primo cat bistrot",
+    name: "Compra il cat bistrot",
     image: require("./../../assets/images/bistrot.png"),
     premio: "8Scat",
   },
@@ -19,7 +19,7 @@ export default Achievment = [
   },
   {
     id: "4",
-    name: "Compra la prima Red Dot Gym",
+    name: "Compra Red Dot Gym",
     image: require("./../../assets/images/garden.png"),
     premio: "8Scat",
   },
