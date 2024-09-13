@@ -1,10 +1,11 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import CardScat from "../components/CardScat";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ShopScat() {
   return (
-    <View
+    <SafeAreaView
       style={{
         flexDirection: "column",
         justifyContent: "center",
@@ -14,12 +15,16 @@ export default function ShopScat() {
         backgroundColor: "white",
       }}
     >
-      <View style={styles.container}>
+      <View className="flex-1 w-full h-full items-center mt-5">
+        <Text className="text-3xl font-pregular text-primary">Shop</Text>
         <Image
           source={require("./../../assets/images/removespot.png")}
+          className="border-primary"
           style={styles.noads}
         ></Image>
-        <Text>Purchase scatolette</Text>
+        <Text className="text-xl font-pregular mb-5 text-primary">
+          Purchase scatolette
+        </Text>
         <View
           style={{
             flexDirection: "row",
@@ -52,7 +57,7 @@ export default function ShopScat() {
           ></CardScat>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -67,14 +72,6 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     borderColor: "#5D2E8C",
     fontSize: 20,
-    borderRadius: 3,
-  },
-  container: {
-    width: "100%",
-    height: "100%",
-    margin: 30,
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    borderRadius: 5,
   },
 });

@@ -40,9 +40,9 @@ export default function EdificiPurchase2({
 
 const styles = StyleSheet.create({
   factoryButton: {
-    padding: 10,
+    padding: 7,
     backgroundColor: "#5D2E8C",
-    margin: 10,
+    margin: 15,
     borderRadius: 5,
   },
   disabledButton: {

@@ -49,7 +49,7 @@ export default EdificiData = [
   },
   {
     id: "7",
-    name: "Beach cleaner",
+    name: "Beach clean",
     image: require("./../../assets/images/beach cleaner.png"),
     cost: 500000,
     increment: 500,
@@ -65,7 +65,7 @@ export default EdificiData = [
   },
   {
     id: "9",
-    name: "Sushi Restaurant",
+    name: "Sushi Bar",
     image: require("./../../assets/images/sushi.png"),
     cost: 500000,
     increment: 500,

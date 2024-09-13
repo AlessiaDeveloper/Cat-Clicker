@@ -94,7 +94,7 @@ export default function Gattohome() {
 
   const renderItem = ({ item }) => {
     return (
-      <View className="flex flex-row border-b-2 border-primary items-center justify-around bg-white">
+      <View className="flex flex-row border-b-2 border-primary items-center justify-between bg-white">
         <Image source={item.image} style={styles.imageEdifici} />
         <View className="flex-col items-center">
           <Text className="font-pregular text-primary text-lg">
@@ -117,9 +117,7 @@ export default function Gattohome() {
       </View>
     );
   };
-
   // questo è per settare i click
-
   const handlePress = () => {
     setActualScore((current) => current + 1);
   };
@@ -128,7 +126,14 @@ export default function Gattohome() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ flex: 5, flexDirection: "row", justifyContent: "center" }}>
+      <View
+        style={{
+          flex: 3,
+          flexDirection: "row",
+          marginTop: 50,
+          justifyContent: "center",
+        }}
+      >
         <ModalSettings />
         <Animatable.View ref={buttonRef}>
           <Pressable
@@ -159,8 +164,8 @@ export default function Gattohome() {
         <ModalAchievment />
       </View>
 
-      <View style={styles.arancio}>
-        <Text className="text-lg font-pregular text-secondary">
+      <View className="flex flex-row justify-between border-y-2 border-secondary w-full p-3">
+        <Text className="text-lg font-pregular text-secondary ">
           N scatolette
         </Text>
         <Text className="text-lg font-pregular text-secondary">
@@ -180,16 +185,6 @@ export default function Gattohome() {
 }
 
 const styles = StyleSheet.create({
-  arancio: {
-    padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
-    height: "20px",
-    backgroundColor: "#5D2E8C",
-    borderTopWidth: 2,
-    borderTopColor: "yellow",
-  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -207,7 +202,6 @@ const styles = StyleSheet.create({
     margin: 2,
   },
   image: {
-    marginTop: 5,
     width: 200,
     height: 300,
   },

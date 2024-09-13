@@ -3,40 +3,25 @@ import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 
 export default CardScat = ({ image, guadagno, costo }) => {
   return (
-    <View style={styles.card}>
-      <Text>{guadagno}</Text>
+    <View className="p-4 w-fit h-4/6 border-2 border-primary rounded-md items-center mx-1 py-3 ">
+      <Text className="text-lg font-pregular text-primary">{guadagno}</Text>
       <Image source={image} style={styles.image}></Image>
-      <View>
-        <TouchableOpacity style={styles.factoryButton}>
-          <Text>{costo} </Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        style={styles.factoryButton}
+        className="px-2 bg-primary text-secondary rounded-md"
+      >
+        <Text className="text-lg font-pregular text-secondary">{costo} </Text>
+      </TouchableOpacity>
+      <View></View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    padding: 5,
-    width: "30%",
-    height: "70%",
-    borderColor: "#5D2E8C",
-    borderWidth: 3,
-    alignItems: "center",
-    backgroundColor: "white",
-    margin: 3,
-    borderRadius: 3,
-  },
   image: {
     flexDirection: "column",
     resizeMode: "contain",
-    width: "70%",
+    width: "90%",
     height: "60%",
-  },
-  factoryButton: {
-    padding: 7,
-    backgroundColor: "#5D2E8C",
-    color: "yellow",
-    borderRadius: 5,
   },
 });

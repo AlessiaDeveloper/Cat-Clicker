@@ -7,6 +7,7 @@ import {
   View,
   Image,
   Text,
+  SafeAreaView,
 } from "react-native";
 
 export default function ModalAchievment() {
@@ -23,14 +24,52 @@ export default function ModalAchievment() {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}>
+        <SafeAreaView style={styles.centeredView}>
           <View style={styles.modalView}>
+            <Text className="text-2xl font-pregular text-primary">
+              LIst of Achievment
+            </Text>
+
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
             >
-              <Text style={styles.textStyle}>Compra il primo cat bistrot</Text>
-              <Text style={styles.textStyle}>
+              <Text className="text-sm font-pregular text-white">
+                Compra il primo cat bistrot
+              </Text>
+              <Text className="text-lg font-pregular text-secondary">
+                8{" "}
+                <Image
+                  style={styles.image}
+                  source={require("../../assets/images/scatoletta.png")}
+                />
+              </Text>
+            </Pressable>
+
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text className="text-md font-pregular text-white">
+                Compra la prima red dot gym
+              </Text>
+              <Text className="text-lg font-pregular text-secondary">
+                8{" "}
+                <Image
+                  style={styles.image}
+                  source={require("../../assets/images/scatoletta.png")}
+                />
+              </Text>
+            </Pressable>
+
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text className="text-md font-pregular text-white">
+                Porta il bistrot a livello 5
+              </Text>
+              <Text className="text-lg font-pregular flex justify-end text-secondary">
                 8{" "}
                 <Image
                   style={styles.image}
@@ -42,31 +81,12 @@ export default function ModalAchievment() {
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
             >
-              {/* <Text style={styles.textStyle}>
-                Compra il primo cat bistrot
+              <Text className="text-xl font-pregular text-secondary">
+                Chiudi
               </Text>
-              <Text style={styles.textStyle}>8 croccantini</Text> */}
-            </Pressable>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              {/* <Text style={styles.textStyle}>
-                Compra il primo cat bistrot
-              </Text> */}
-              {/* <Text style={styles.textStyle}>8 croccantini</Text> */}
-            </Pressable>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              {/* <Text style={styles.textStyle}>
-                Compra il primo cat bistrot
-              </Text> */}
-              {/* <Text style={styles.textStyle}>8 croccantini</Text> */}
             </Pressable>
           </View>
-        </View>
+        </SafeAreaView>
       </Modal>
       <Pressable
         style={[styles.button, styles.buttonOpen]}
@@ -108,6 +128,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginTop: 10,
     padding: 10,
+    alignItems: "center",
   },
   buttonOpen: {},
   buttonClose: {
