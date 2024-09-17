@@ -93,7 +93,7 @@ export default function ModalAchievment() {
             }}
             disabled={item.claimed || !isClaimable} // Disabilita se già riscattato o se il livello richiesto non è soddisfatto
           >
-            <Text className="text-lg font-pregular text-primary">
+            <Text className="text-sm font-pregular text-secondary">
               {item.claimed ? "Riscattato" : "8 "}
               <Image
                 style={styles.image}
