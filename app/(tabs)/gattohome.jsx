@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useContext,
+} from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,10 +18,11 @@ import * as Animatable from "react-native-animatable";
 import EdificiData from "../data/EdificiData";
 import ModalSettings from "../(modal)/ModalSettings";
 import ModalAchievment from "../(modal)/ModalAchievment";
-
+import GameContext from "../store/GameProvider";
 import EdificiPurchaseButton from "../components/EdificiPurchaseButton";
 
 export default function Gattohome() {
+  const { specialCurrency, setSpecialCurrency } = useContext(GameContext);
   const [displayScore, setDisplayScore] = useState(100000);
   const [actualScore, setActualScore] = useState(100000);
   const [factories, setFactories] = useState(0);
@@ -165,9 +172,15 @@ export default function Gattohome() {
       </View>
 
       <View className="flex flex-row justify-between border-y-2 border-secondary w-full p-3">
-        <Text className="text-lg font-pregular text-secondary ">
-          N scatolette
+        <Text className="text-lg font-pregular ml-2  text-secondary ">
+          <Image
+            style={styles.imageIcon}
+            source={require("../../assets/images/scatoletta.png")}
+          />
+          <Text> {"  "}</Text>
+          {specialCurrency}
         </Text>
+
         <Text className="text-lg font-pregular text-secondary">
           {displayScore}
         </Text>
@@ -204,5 +217,10 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 300,
+  },
+  imageIcon: {
+    marginBottom: 3,
+    width: 25,
+    height: 25,
   },
 });

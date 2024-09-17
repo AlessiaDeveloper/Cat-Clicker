@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Alert,
   Modal,
@@ -9,26 +9,70 @@ import {
   Text,
   SafeAreaView,
   FlatList,
-  StatusBar,
 } from "react-native";
-import Achievment from "../data/Achievment";
+import GameContext from "../store/GameProvider";
+import Achievment from "../data/Achievment"; // Importa l'elenco di achievement
 
 export default function ModalAchievment() {
   const [modalVisible, setModalVisible] = useState(false);
+  const { specialCurrency, setSpecialCurrency } = useContext(GameContext);
+
+  // Stato per gestire se l'achievement è stato riscattato
+  const [achievements, setAchievements] = useState(
+    Achievment.map((achievement) => ({
+      ...achievement,
+      claimed: false, // Aggiunge una proprietà claimed
+    }))
+  );
+
+  const incrementCurrency = (id, amount) => {
+    // Incrementa la valuta speciale
+    setSpecialCurrency(specialCurrency + amount);
+
+    // Aggiorna l'achievement per settare "claimed" a true e spostarlo in fondo
+    setAchievements((prevAchievements) => {
+      const updatedAchievements = prevAchievements.map((achievement) => {
+        if (achievement.id === id) {
+          return { ...achievement, claimed: true }; // Imposta claimed a true
+        }
+        return achievement;
+      });
+
+      // Sposta gli achievement già riscattati in fondo
+      const claimedAchievements = updatedAchievements.filter(
+        (achievement) => achievement.claimed
+      );
+      const unclaimedAchievements = updatedAchievements.filter(
+        (achievement) => !achievement.claimed
+      );
+
+      return [...unclaimedAchievements, ...claimedAchievements]; // Unisci prima gli unclaimed e poi i claimed
+    });
+  };
+
   const renderItem = ({ item }) => {
     return (
-      <View className="flex flex-row border-2 border-primary p-4 bg-secondary items-center justify-between ">
-        <View className="flex-row flex-wrap w-full  justify-between items-center">
+      <View className="flex flex-row border-2 border-primary p-4 bg-secondary items-center justify-between">
+        <View className="flex-row flex-wrap w-full justify-between items-center">
           <Text className="font-pregular w-3/6 text-primary text-xs">
             {item.name}
           </Text>
+
           <Pressable
             className="flex-row flex-wrap justify-between items-center"
-            style={[styles.button, styles.buttonClose]}
-            onPress={() => setModalVisible(!modalVisible)}
+            style={[
+              styles.button,
+              item.claimed ? styles.buttonDisabled : styles.buttonClose,
+            ]}
+            onPress={() => {
+              if (!item.claimed) {
+                incrementCurrency(item.id, 8); // Incrementa solo se non è già stato riscattato
+              }
+            }}
+            disabled={item.claimed} // Disabilita il bottone se claimed è true
           >
             <Text className="text-md font-pregular text-secondary">
-              8{" "}
+              {item.claimed ? "Riscattato" : "8 "}
               <Image
                 style={styles.image}
                 source={require("../../assets/images/scatoletta.png")}
@@ -39,6 +83,7 @@ export default function ModalAchievment() {
       </View>
     );
   };
+
   return (
     <View>
       <Modal
@@ -47,21 +92,21 @@ export default function ModalAchievment() {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
         }}
       >
         <SafeAreaView style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text className="text-2xl  my-5 font-pregular text-primary">
-              LIst of Achievment
+            <Text className="text-2xl my-5 font-pregular text-primary">
+              List of Achievements
             </Text>
 
             <FlatList
-              data={Achievment}
+              data={achievements} // Usa lo stato achievements aggiornato
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
             />
+
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
@@ -73,6 +118,7 @@ export default function ModalAchievment() {
           </View>
         </SafeAreaView>
       </Modal>
+
       <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}
@@ -121,16 +167,16 @@ const styles = StyleSheet.create({
     borderColor: "yellow",
     borderWidth: 2,
   },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
+  buttonDisabled: {
+    backgroundColor: "#B0B0B0", // Colore diverso per il bottone disabilitato
+    borderColor: "gray",
+    borderWidth: 2,
   },
-  modalText: {
-    marginBottom: 20,
-    textAlign: "center",
+  icona: {
+    width: 60,
+    height: 60,
+    top: -7,
   },
-  icona: { width: 60, height: 60, top: -7 },
   image: {
     marginTop: 5,
     width: 15,

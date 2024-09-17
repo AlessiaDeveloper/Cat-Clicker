@@ -4,6 +4,7 @@ import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import * as NavigationBar from "expo-navigation-bar";
+import { GameProvider } from "./store/GameProvider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,12 +27,14 @@ const RootLayout = () => {
 
   if (!fontsLoaded && !error) return null;
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen
-        name="index"
-        options={{ headerShown: false }}
-      ></Stack.Screen>
-    </Stack>
+    <GameProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          name="index"
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+      </Stack>
+    </GameProvider>
   );
 };
 
