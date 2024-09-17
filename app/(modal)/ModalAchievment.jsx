@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import {
-  Alert,
   Modal,
   StyleSheet,
   Pressable,
@@ -11,11 +10,13 @@ import {
   FlatList,
 } from "react-native";
 import GameContext from "../store/GameProvider";
-import Achievment from "../data/Achievment"; // Importa l'elenco di achievement
+import Achievment from "../data/Achievment";
+import EdificiData from "../data/EdificiData"; // Importa i dati degli edifici
 
 export default function ModalAchievment() {
   const [modalVisible, setModalVisible] = useState(false);
-  const { specialCurrency, setSpecialCurrency } = useContext(GameContext);
+  const { specialCurrency, setSpecialCurrency, levels } =
+    useContext(GameContext);
 
   // Stato per gestire se l'achievement è stato riscattato
   const [achievements, setAchievements] = useState(
@@ -26,35 +27,54 @@ export default function ModalAchievment() {
   );
 
   const incrementCurrency = (id, amount) => {
-    // Incrementa la valuta speciale
-    setSpecialCurrency(specialCurrency + amount);
+    setSpecialCurrency(specialCurrency + amount); // Incrementa la valuta speciale
 
-    // Aggiorna l'achievement per settare "claimed" a true e spostarlo in fondo
+    // Imposta l'achievement come "claimed"
     setAchievements((prevAchievements) => {
-      const updatedAchievements = prevAchievements.map((achievement) => {
-        if (achievement.id === id) {
-          return { ...achievement, claimed: true }; // Imposta claimed a true
-        }
-        return achievement;
-      });
-
-      // Sposta gli achievement già riscattati in fondo
-      const claimedAchievements = updatedAchievements.filter(
-        (achievement) => achievement.claimed
-      );
-      const unclaimedAchievements = updatedAchievements.filter(
-        (achievement) => !achievement.claimed
+      const updatedAchievements = prevAchievements.map((achievement) =>
+        achievement.id === id ? { ...achievement, claimed: true } : achievement
       );
 
-      return [...unclaimedAchievements, ...claimedAchievements]; // Unisci prima gli unclaimed e poi i claimed
+      return sortAchievements(updatedAchievements); // Ordina gli achievement dopo il riscatto
     });
   };
 
+  // Funzione per controllare se il livello richiesto è soddisfatto
+  const canClaim = (achievement) => {
+    const building = EdificiData.find(
+      (b) => b.levelKey === achievement.requiredBuildingKey
+    );
+    if (!building) return false; // Se non trova l'edificio, non è possibile claimmare
+    const currentLevel = levels[building.levelKey] || 0; // Livello attuale dell'edificio
+    return currentLevel >= achievement.requiredLevel;
+  };
+
+  // Funzione per ordinare gli achievement, mettendo quelli claimabili in cima
+  const sortAchievements = (achievementsList) => {
+    const claimable = [];
+    const notClaimable = [];
+    const claimed = [];
+
+    achievementsList.forEach((achievement) => {
+      if (achievement.claimed) {
+        claimed.push(achievement);
+      } else if (canClaim(achievement)) {
+        claimable.push(achievement);
+      } else {
+        notClaimable.push(achievement);
+      }
+    });
+
+    // Gli achievement claimabili sono messi in cima, seguiti da quelli non claimabili e infine da quelli già riscattati
+    return [...claimable, ...notClaimable, ...claimed];
+  };
+
   const renderItem = ({ item }) => {
+    const isClaimable = canClaim(item); // Controlla se è possibile claimmare
     return (
-      <View className="flex flex-row border-2 border-primary p-4 bg-secondary items-center justify-between">
+      <View className="flex flex-row border-2 border-secondary p-4 bg-primary items-center justify-between">
         <View className="flex-row flex-wrap w-full justify-between items-center">
-          <Text className="font-pregular w-3/6 text-primary text-xs">
+          <Text className="font-pregular w-3/6 text-secondary text-xs">
             {item.name}
           </Text>
 
@@ -62,16 +82,18 @@ export default function ModalAchievment() {
             className="flex-row flex-wrap justify-between items-center"
             style={[
               styles.button,
-              item.claimed ? styles.buttonDisabled : styles.buttonClose,
+              item.claimed || !isClaimable
+                ? styles.buttonDisabled
+                : styles.buttonClose,
             ]}
             onPress={() => {
-              if (!item.claimed) {
-                incrementCurrency(item.id, 8); // Incrementa solo se non è già stato riscattato
+              if (!item.claimed && isClaimable) {
+                incrementCurrency(item.id, 8); // Incrementa solo se non è stato riscattato
               }
             }}
-            disabled={item.claimed} // Disabilita il bottone se claimed è true
+            disabled={item.claimed || !isClaimable} // Disabilita se già riscattato o se il livello richiesto non è soddisfatto
           >
-            <Text className="text-md font-pregular text-secondary">
+            <Text className="text-lg font-pregular text-primary">
               {item.claimed ? "Riscattato" : "8 "}
               <Image
                 style={styles.image}
@@ -91,9 +113,7 @@ export default function ModalAchievment() {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
+        onRequestClose={() => setModalVisible(!modalVisible)}
       >
         <SafeAreaView style={styles.centeredView}>
           <View style={styles.modalView}>
@@ -102,7 +122,7 @@ export default function ModalAchievment() {
             </Text>
 
             <FlatList
-              data={achievements} // Usa lo stato achievements aggiornato
+              data={sortAchievements(achievements)} // Ordina gli achievement
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
             />
@@ -161,14 +181,13 @@ const styles = StyleSheet.create({
     marginTop: 5,
     alignItems: "center",
   },
-  buttonOpen: {},
   buttonClose: {
     backgroundColor: "#5D2E8C",
     borderColor: "yellow",
     borderWidth: 2,
   },
   buttonDisabled: {
-    backgroundColor: "#B0B0B0", // Colore diverso per il bottone disabilitato
+    backgroundColor: "#B0B0B0",
     borderColor: "gray",
     borderWidth: 2,
   },

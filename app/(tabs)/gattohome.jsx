@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-  useContext,
-} from "react";
+import React, { useContext, useRef } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -22,82 +16,19 @@ import GameContext from "../store/GameProvider";
 import EdificiPurchaseButton from "../components/EdificiPurchaseButton";
 
 export default function Gattohome() {
-  const { specialCurrency, setSpecialCurrency } = useContext(GameContext);
-  const [displayScore, setDisplayScore] = useState(100000);
-  const [actualScore, setActualScore] = useState(100000);
-  const [factories, setFactories] = useState(0);
-  const [levels, setLevels] = useState(
-    EdificiData.reduce((acc, building) => {
-      acc[building.levelKey] = 0;
-      return acc;
-    }, {})
-  );
-  //itera per ogni edificio il cost iniziale e lo da al valore acc
-  const [costs, setCosts] = useState(
-    EdificiData.reduce((acc, building) => {
-      acc[building.levelKey] = building.cost;
-      return acc;
-    }, {})
-  );
-  const factoriesRef = useRef(0);
-  // Funzione per incrementare con callback per evitare di rerenderizzare la funzione ad ogni render del componente
-  const incrementScoreGradually = useCallback(() => {
-    //calcola la differenza tra actualscore e display score
-    const difference = actualScore - displayScore;
-    //se la differenza è maggiore di 0 allora fa un arrotondamento per eccesso della differenza
-    // diviso 10 e lo mette nella variabile increment
-    if (difference > 0) {
-      const increment = Math.ceil(difference / 10);
-      //poi mostra lo score e mettendo l'increment + lo score a cui è arrivato senza superare lo score attuale
-      setDisplayScore((prevScore) =>
-        Math.min(prevScore + increment, actualScore)
-      );
-      //se la differenza è minore di 0 mostra l'actualscore
-    } else if (difference < 0) {
-      // Gestisce il caso in cui actualScore è minore di displayScore (dopo un acquisto)
-      setDisplayScore(actualScore);
-    }
-  }, [actualScore, displayScore]);
+  const {
+    specialCurrency,
+    displayScore,
+    actualScore,
+    setActualScore,
+    factories,
+    setFactories,
+    levels,
+    costs,
+    handleLevelUp,
+  } = useContext(GameContext);
 
-  useEffect(() => {
-    factoriesRef.current = factories;
-  }, [factories]);
-
-  useEffect(() => {
-    //viene creatoun intervallo usando setInterval che chiama la funzione IncrementScoreGraduallyogni 50 ms
-    const intervalId = setInterval(incrementScoreGradually, 50);
-    //qui il clearInterval serve quando il componente viene smontato o quando le dipendenze cambiano, qui la funzione
-    //cancella  l'intervallo creato
-    return () => clearInterval(intervalId);
-  }, [incrementScoreGradually]);
-
-  useEffect(() => {
-    //viene creato un intervallo di 1 secondo che farà la funzione dopo
-    const intervalId = setInterval(() => {
-      //se gli edifici son maggiori di 0 allora attribuisce all actualscore lo score di prima con quello degli edifici
-      if (factories > 0) {
-        setActualScore((prevScore) => prevScore + factories);
-      }
-    }, 1000);
-    //questa viene usata quando il componente viene smontato e quando gli edifici cammbiano
-    return () => clearInterval(intervalId);
-  }, [factories]);
-
-  //quando livelli un edificio al livello prima viene aggiunto 1
-  const handleLevelUp = useCallback(
-    (buildingName) => {
-      setLevels((prevLevels) => ({
-        ...prevLevels,
-        [buildingName]: prevLevels[buildingName] + 1,
-      }));
-      // mentre al costo fa l'operazione di moltlipicare il costo per 1.5
-      setCosts((prevCosts) => ({
-        ...prevCosts,
-        [buildingName]: Math.ceil(prevCosts[buildingName] * 1.5),
-      }));
-    },
-    [setLevels, setCosts]
-  );
+  const buttonRef = useRef(null);
 
   const renderItem = ({ item }) => {
     return (
@@ -124,12 +55,10 @@ export default function Gattohome() {
       </View>
     );
   };
-  // questo è per settare i click
+
   const handlePress = () => {
     setActualScore((current) => current + 1);
   };
-
-  const buttonRef = useRef(null);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -172,7 +101,7 @@ export default function Gattohome() {
       </View>
 
       <View className="flex flex-row justify-between border-y-2 border-secondary w-full p-3">
-        <Text className="text-lg font-pregular ml-2  text-secondary ">
+        <Text className="text-lg font-pregular ml-2 text-secondary">
           <Image
             style={styles.imageIcon}
             source={require("../../assets/images/scatoletta.png")}

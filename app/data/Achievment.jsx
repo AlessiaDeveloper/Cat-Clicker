@@ -32,7 +32,7 @@ export default Achievment = [
   {
     id: "5",
     name: "Porta a livello 10 il Cat Bistrot",
-    requiredLevel: 5, // Livello richiesto
+    requiredLevel: 10, // Livello richiesto
     requiredBuildingKey: "bistrot",
     image: require("./../../assets/images/park.png"),
     premio: "8Scat",
