@@ -20,8 +20,9 @@ export default function ModalAchievment() {
   // Stato per gestire se l'achievement è stato riscattato
   const [achievements, setAchievements] = useState(
     Achievment.map((achievement) => ({
+      //prende tutti gli achievment e gli imposta claimed false di default
       ...achievement,
-      claimed: false, // Aggiunge una proprietà claimed
+      claimed: false,
     }))
   );
 
@@ -30,22 +31,24 @@ export default function ModalAchievment() {
 
     // Imposta l'achievement come "claimed"
     setAchievements((prevAchievements) => {
+      //qua mappa gli achievment se l id dell'achievment è uguale all'id ricercato allora gli imposta il claimed a true,
+      // altrimenti riporta gli achievment normali
       const updatedAchievements = prevAchievements.map((achievement) =>
         achievement.id === id ? { ...achievement, claimed: true } : achievement
       );
 
-      return sortAchievements(updatedAchievements); // Ordina gli achievement dopo il riscatto
+      return sortAchievements(updatedAchievements); //Ordina gli achievement dopo il riscatto
     });
   };
 
-  // Funzione per controllare se il livello richiesto è soddisfatto
   const canClaim = (achievement) => {
+    // Funzione per controllare se il livello richiesto è soddisfatto
     const building = EdificiData.find(
       (b) => b.levelKey === achievement.requiredBuildingKey
     );
     if (!building) return false; // Se non trova l'edificio, non è possibile claimmare
     const currentLevel = levels[building.levelKey] || 0; // Livello attuale dell'edificio
-    return currentLevel >= achievement.requiredLevel;
+    return currentLevel >= achievement.requiredLevel; //qui controlla se il liv dell edificio è uguale o maggiore a quello richiesto e ritorna true
   };
 
   // Funzione per ordinare gli achievement, mettendo quelli claimabili in cima

@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,24 +12,44 @@ import * as Animatable from "react-native-animatable";
 import ModalSettings from "../(modal)/ModalSettings";
 import ModalAchievment from "../(modal)/ModalAchievment";
 import GameContext from "../store/GameProvider";
-import EdificiPurchaseButton from "../components/EdificiPurchaseButton";
 import UpgradeData from "../data/UpgradeData";
 
 export default function Upgrade() {
-  const {
-    scatolette,
-    displayScore,
-    actualScore,
-    setActualScore,
-    setFactories,
-    levels,
-    costs,
-    handleLevelUp,
-  } = useContext(GameContext);
+  const { scatolette, setScatolette, displayScore } = useContext(GameContext);
 
   const buttonRef = useRef(null);
 
+  // Stato locale per tenere traccia dei costi aggiornati per ogni upgrade
+  const [upgrades, setUpgrades] = useState(
+    UpgradeData.map((upgrade) => ({
+      ...upgrade,
+      currentCost: upgrade.requiredScat, // Inizialmente il costo è quello definito in UpgradeData
+    }))
+  );
+
+  // Funzione per gestire l'acquisto di un upgrade
+  const handleUpgradePurchase = (id) => {
+    const selectedUpgrade = upgrades.find((upgrade) => upgrade.id === id);
+
+    if (scatolette >= selectedUpgrade.currentCost) {
+      // Se ci sono abbastanza scatolette, riduci il numero di scatolette e aumenta il costo dell'upgrade
+      setScatolette(scatolette - selectedUpgrade.currentCost);
+
+      // Aggiorna il costo dell'upgrade di 5 scatolette
+      setUpgrades((prevUpgrades) =>
+        prevUpgrades.map((upgrade) =>
+          upgrade.id === id
+            ? { ...upgrade, currentCost: upgrade.currentCost + 5 }
+            : upgrade
+        )
+      );
+    }
+  };
+
   const renderItem = ({ item }) => {
+    // Controlla se il bottone deve essere disabilitato
+    const isDisabled = scatolette < item.currentCost;
+
     return (
       <View className="flex flex-row border-t-2 border-primary items-center justify-between bg-white">
         <Image source={item.image} style={styles.imageEdifici} />
@@ -42,9 +62,17 @@ export default function Upgrade() {
           </Text>
         </View>
 
-        <Pressable className="flex-row items-center p-3 rounded-md m-3 bg-primary  font-pregular">
+        <Pressable
+          className="flex-row items-center p-3 rounded-md m-3"
+          style={[
+            styles.button, // Stile normale del bottone
+            isDisabled ? styles.buttonDisabled : styles.buttonEnabled, // Stile disabilitato o abilitato
+          ]}
+          onPress={() => handleUpgradePurchase(item.id)} // Gestisci l'acquisto qui
+          disabled={isDisabled} // Disabilita il bottone se non ci sono abbastanza scatolette
+        >
           <Text className="font-pregular text-secondary">
-            {item.requiredScat} {""}
+            {item.currentCost} {""}
           </Text>
           <Image
             style={styles.imageIcon}
@@ -53,10 +81,6 @@ export default function Upgrade() {
         </Pressable>
       </View>
     );
-  };
-
-  const handlePress = () => {
-    setActualScore((current) => current + 1);
   };
 
   return (
@@ -73,7 +97,6 @@ export default function Upgrade() {
         <Animatable.View ref={buttonRef}>
           <Pressable
             ref={buttonRef}
-            onPress={handlePress}
             style={({ pressed }) => [
               {
                 backgroundColor: pressed ? "#5D2E8C" : "#5D2E8C",
@@ -82,18 +105,10 @@ export default function Upgrade() {
               styles.gattoClicker,
             ]}
           >
-            {({ pressed }) => (
-              <>
-                <Image
-                  style={styles.image}
-                  source={
-                    pressed
-                      ? require("./../../assets/images/cat1.png")
-                      : require("./../../assets/images/gatto2.0.png")
-                  }
-                />
-              </>
-            )}
+            <Image
+              style={styles.image}
+              source={require("./../../assets/images/gatto2.0.png")}
+            />
           </Pressable>
         </Animatable.View>
         <ModalAchievment />
@@ -125,7 +140,7 @@ export default function Upgrade() {
           </Text>
         </View>
         <FlatList
-          data={UpgradeData}
+          data={upgrades}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
         />
@@ -163,5 +178,16 @@ const styles = StyleSheet.create({
   imageIcona: {
     width: 60,
     height: 60,
+  },
+  button: {
+    padding: 10,
+    borderRadius: 10,
+    margin: 5,
+  },
+  buttonEnabled: {
+    backgroundColor: "#5D2E8C", // Colore del bottone quando abilitato
+  },
+  buttonDisabled: {
+    backgroundColor: "#B0B0B0", // Colore del bottone quando disabilitato
   },
 });
