@@ -17,7 +17,7 @@ import UpgradeData from "../data/UpgradeData";
 
 export default function Upgrade() {
   const {
-    specialCurrency,
+    scatolette,
     displayScore,
     actualScore,
     setActualScore,
@@ -106,7 +106,7 @@ export default function Upgrade() {
             source={require("../../assets/images/scatoletta.png")}
           />
           <Text> {"  "}</Text>
-          {specialCurrency}
+          {scatolette}
         </Text>
 
         <Text className="text-lg font-pregular text-secondary">

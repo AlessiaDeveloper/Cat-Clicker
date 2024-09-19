@@ -17,7 +17,7 @@ import EdificiPurchaseButton from "../components/EdificiPurchaseButton";
 
 export default function Gattohome() {
   const {
-    specialCurrency,
+    scatolette,
     displayScore,
     actualScore,
     setActualScore,
@@ -106,7 +106,7 @@ export default function Gattohome() {
             source={require("../../assets/images/scatoletta.png")}
           />
           <Text> {"  "}</Text>
-          {specialCurrency}
+          {scatolette}
         </Text>
 
         <Text className="text-lg font-pregular text-secondary">

@@ -15,8 +15,7 @@ import EdificiData from "../data/EdificiData"; // Importa i dati degli edifici
 
 export default function ModalAchievment() {
   const [modalVisible, setModalVisible] = useState(false);
-  const { specialCurrency, setSpecialCurrency, levels } =
-    useContext(GameContext);
+  const { scatolette, setScatolette, levels } = useContext(GameContext);
 
   // Stato per gestire se l'achievement è stato riscattato
   const [achievements, setAchievements] = useState(
@@ -27,7 +26,7 @@ export default function ModalAchievment() {
   );
 
   const incrementCurrency = (id, amount) => {
-    setSpecialCurrency(specialCurrency + amount); // Incrementa la valuta speciale
+    setScatolette(scatolette + amount); // Incrementa la valuta speciale
 
     // Imposta l'achievement come "claimed"
     setAchievements((prevAchievements) => {
