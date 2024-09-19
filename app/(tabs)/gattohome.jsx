@@ -21,7 +21,6 @@ export default function Gattohome() {
     displayScore,
     actualScore,
     setActualScore,
-    factories,
     setFactories,
     levels,
     costs,
