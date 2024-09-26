@@ -80,6 +80,7 @@ export const GameProvider = ({ children }) => {
         setScatolette,
         actualScore,
         displayScore,
+        setDisplayScore,
         setActualScore,
         factories,
         setFactories,

@@ -1,15 +1,19 @@
 export const upgradeFunctions = {
-  1: (scatolette, setScatolette) => {
-    const croccantiniEarned = Math.floor(scatolette * 0.5);
-    setScatolette(scatolette + croccantiniEarned);
+  1: (displayScore, setDisplayScore, actualScore, setActualScore) => {
+    const croccantiniEarned = Math.floor(displayScore * 0.5);
+
+    // Aggiorna sia actualScore che displayScore
+    const newScore = displayScore + croccantiniEarned;
+    setActualScore(newScore);
+    setDisplayScore(newScore);
   },
-  2: (scatolette, setScatolette) => {
-    const croccantiniEarned = 100;
-    setScatolette(scatolette + croccantiniEarned);
-  },
-  3: (scatolette, setScatolette) => {
-    // Esempio: aumento del 10% la produzione di croccantini
-    console.log("Upgrade 3 attivato");
+  2: (displayScore, setDisplayScore, actualScore, setActualScore) => {
+    const croccantiniEarned = Math.floor(displayScore * 2);
+
+    // Aggiorna sia actualScore che displayScore
+    const newScore = displayScore + croccantiniEarned;
+    setActualScore(newScore);
+    setDisplayScore(newScore);
   },
   // Aggiungi altre funzioni per gli altri upgrade...
 };

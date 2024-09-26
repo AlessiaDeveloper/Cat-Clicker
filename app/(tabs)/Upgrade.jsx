@@ -13,9 +13,17 @@ import ModalSettings from "../(modal)/ModalSettings";
 import ModalAchievment from "../(modal)/ModalAchievment";
 import GameContext from "../store/GameProvider";
 import UpgradeData from "../data/UpgradeData";
+import { upgradeFunctions } from "../utils/upgradeFunctions";
 
 export default function Upgrade() {
-  const { scatolette, setScatolette, displayScore } = useContext(GameContext);
+  const {
+    scatolette,
+    setScatolette,
+    displayScore,
+    setDisplayScore,
+    actualScore,
+    setActualScore,
+  } = useContext(GameContext);
 
   const buttonRef = useRef(null);
 
@@ -42,6 +50,14 @@ export default function Upgrade() {
             ? { ...upgrade, currentCost: upgrade.currentCost + 5 }
             : upgrade
         )
+      );
+    }
+    if (upgradeFunctions[id]) {
+      upgradeFunctions[id](
+        displayScore,
+        setDisplayScore,
+        actualScore,
+        setActualScore
       );
     }
   };
