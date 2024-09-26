@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Modal,
   StyleSheet,
@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import GameContext from "../store/GameProvider";
 import Achievment from "../data/Achievment";
+import * as NavigationBar from "expo-navigation-bar";
 import EdificiData from "../data/EdificiData"; // Importa i dati degli edifici
 
 export default function ModalAchievment() {
@@ -25,6 +26,13 @@ export default function ModalAchievment() {
       claimed: false,
     }))
   );
+  // useEffect(() => {
+  //   async function hideNavigationBar() {
+  //     await NavigationBar.setVisibilityAsync("hidden");
+  //     await NavigationBar.setBehaviorAsync("overlay-swipe");
+  //   }
+  //   hideNavigationBar();
+  // }, []);
 
   const incrementCurrency = (id, amount) => {
     setScatolette(scatolette + amount); // Incrementa la valuta speciale

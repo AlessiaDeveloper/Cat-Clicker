@@ -40,6 +40,10 @@ export default function Gattohome() {
           <Text className="font-pregular text-primary text-md">
             Level {levels[item.levelKey]}
           </Text>
+          <Text className="font-pregular text-secondary bg-primary text-md">
+            {item.increment}
+            /sec{" "}
+          </Text>
         </View>
 
         <EdificiPurchaseButton
