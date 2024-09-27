@@ -15,5 +15,8 @@ export const upgradeFunctions = {
     setActualScore(newScore);
     setDisplayScore(newScore);
   },
-  // Aggiungi altre funzioni per gli altri upgrade...
+  3: (factories, setFactories) => {
+    // Incrementa la produzione di ogni fabbrica del 10%
+    setFactories((prevFactories) => prevFactories * 2);
+  },
 };

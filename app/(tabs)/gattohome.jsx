@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   Text,
   Image,
   Pressable,
+  Animated,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import EdificiData from "../data/EdificiData";
@@ -15,7 +16,7 @@ import ModalAchievment from "../(modal)/ModalAchievment";
 import GameContext from "../store/GameProvider";
 import EdificiPurchaseButton from "../components/EdificiPurchaseButton";
 
-export default function Gattohome() {
+export default function GattoHome() {
   const {
     scatolette,
     displayScore,
@@ -29,6 +30,24 @@ export default function Gattohome() {
 
   const buttonRef = useRef(null);
 
+  const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
+  const [showEffect, setShowEffect] = useState(false);
+
+  // Funzione per gestire il tocco e la sua posizione
+  const handlePressIn = (e) => {
+    const { locationX, locationY } = e.nativeEvent;
+    setTouchPosition({ x: locationX, y: locationY });
+    setShowEffect(true);
+  };
+
+  const handlePressOut = () => {
+    setShowEffect(false);
+  };
+
+  const handlePress = () => {
+    setActualScore((current) => current + 1);
+  };
+
   const renderItem = ({ item }) => {
     return (
       <View className="flex flex-row border-b-2 border-primary items-center justify-between bg-white">
@@ -40,9 +59,8 @@ export default function Gattohome() {
           <Text className="font-pregular text-primary text-md">
             Level {levels[item.levelKey]}
           </Text>
-          <Text className="font-pregular text-secondary bg-primary text-md">
-            {item.increment}
-            /sec{" "}
+          <Text className="font-pregular text-secondary rounded-md p-1 bg-primary text-xs">
+            {item.increment}/sec
           </Text>
         </View>
 
@@ -59,10 +77,6 @@ export default function Gattohome() {
     );
   };
 
-  const handlePress = () => {
-    setActualScore((current) => current + 1);
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -76,15 +90,10 @@ export default function Gattohome() {
         <ModalSettings />
         <Animatable.View ref={buttonRef}>
           <Pressable
-            ref={buttonRef}
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}
             onPress={handlePress}
-            style={({ pressed }) => [
-              {
-                backgroundColor: pressed ? "#5D2E8C" : "#5D2E8C",
-                opacity: pressed ? 0.8 : 1,
-              },
-              styles.gattoClicker,
-            ]}
+            style={styles.gattoClicker} // Usa lo stile qui per rendere cliccabile l'intero bottone
           >
             {({ pressed }) => (
               <>
@@ -99,6 +108,26 @@ export default function Gattohome() {
               </>
             )}
           </Pressable>
+
+          {/* Mostra effetto animato quando c'è un tocco */}
+          {showEffect && (
+            <Animatable.View
+              animation="zoomIn"
+              duration={200} // Riduci la durata dell'animazione
+              style={[
+                styles.touchEffect,
+                {
+                  left: touchPosition.x - 50, // centriamo l'immagine
+                  top: touchPosition.y - 50,
+                },
+              ]}
+            >
+              <Image
+                source={require("../../assets/images/zampa.png")} // L'immagine che vuoi mostrare
+                style={styles.effectImage}
+              />
+            </Animatable.View>
+          )}
         </Animatable.View>
         <ModalAchievment />
       </View>
@@ -137,9 +166,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#5D2E8C",
   },
   containerEdifici: {
-    height: "48%",
+    height: "49%",
   },
-
   imageEdifici: {
     width: 110,
     height: 80,
@@ -154,5 +182,23 @@ const styles = StyleSheet.create({
     marginBottom: 3,
     width: 25,
     height: 25,
+  },
+  gattoClicker: {
+    width: 200,
+    height: 300,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  touchEffect: {
+    position: "absolute",
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+  },
+  effectImage: {
+    width: 50,
+    height: 50,
+    resizeMode: "contain",
   },
 });

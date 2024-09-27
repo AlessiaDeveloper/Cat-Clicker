@@ -29,7 +29,7 @@ const TabsLayout = () => {
         }}
       >
         <Tabs.Screen
-          name="Gattohome"
+          name="gattohome"
           options={{
             tabBarLabel: () => null,
             headerShown: false,

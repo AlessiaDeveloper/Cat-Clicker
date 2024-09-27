@@ -10,7 +10,7 @@ export default function App() {
         source={require("../assets/images/cattrono.png")}
         style={styles.image}
       ></ImageBackground>
-      <Redirect href={"/Gattohome"}></Redirect>
+      <Redirect href={"/gattohome"}></Redirect>
     </SafeAreaView>
   );
 }

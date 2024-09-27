@@ -23,6 +23,8 @@ export default function Upgrade() {
     setDisplayScore,
     actualScore,
     setActualScore,
+    factories,
+    setFactories,
   } = useContext(GameContext);
 
   const buttonRef = useRef(null);
@@ -57,7 +59,9 @@ export default function Upgrade() {
         displayScore,
         setDisplayScore,
         actualScore,
-        setActualScore
+        setActualScore,
+        factories,
+        setFactories
       );
     }
   };

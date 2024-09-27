@@ -24,7 +24,7 @@ export default Achievment = [
   {
     id: "4",
     name: "Compra Red Dot Gym",
-    requiredLevel: 10, // Livello richiesto
+    requiredLevel: 1, // Livello richiesto
     requiredBuildingKey: "gym",
     image: require("./../../assets/images/garden.png"),
     premio: "8Scat",
