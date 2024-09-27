@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,7 +7,6 @@ import {
   Text,
   Image,
   Pressable,
-  Animated,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import EdificiData from "../data/EdificiData";
@@ -28,24 +27,18 @@ export default function GattoHome() {
     handleLevelUp,
   } = useContext(GameContext);
 
-  const buttonRef = useRef(null);
-
   const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
   const [showEffect, setShowEffect] = useState(false);
 
-  // Funzione per gestire il tocco e la sua posizione
   const handlePressIn = (e) => {
-    const { locationX, locationY } = e.nativeEvent;
-    setTouchPosition({ x: locationX, y: locationY });
+    const { pageX, pageY } = e.nativeEvent;
+    setTouchPosition({ x: pageX - 25, y: pageY - 25 }); // Centrato
     setShowEffect(true);
+    setActualScore((current) => current + 1); // Incremento immediato al tocco
   };
 
   const handlePressOut = () => {
     setShowEffect(false);
-  };
-
-  const handlePress = () => {
-    setActualScore((current) => current + 1);
   };
 
   const renderItem = ({ item }) => {
@@ -59,7 +52,7 @@ export default function GattoHome() {
           <Text className="font-pregular text-primary text-md">
             Level {levels[item.levelKey]}
           </Text>
-          <Text className="font-pregular text-secondary rounded-md p-1 bg-primary text-xs">
+          <Text className="font-pregular text-primary rounded-md p-1 bg-secondary text-xs">
             {item.increment}/sec
           </Text>
         </View>
@@ -79,58 +72,48 @@ export default function GattoHome() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View
-        style={{
-          flex: 3,
-          flexDirection: "row",
-          marginTop: 50,
-          justifyContent: "center",
-        }}
+      <Pressable
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        style={styles.gattoClicker}
       >
-        <ModalSettings />
-        <Animatable.View ref={buttonRef}>
-          <Pressable
-            onPressIn={handlePressIn}
-            onPressOut={handlePressOut}
-            onPress={handlePress}
-            style={styles.gattoClicker} // Usa lo stile qui per rendere cliccabile l'intero bottone
-          >
-            {({ pressed }) => (
-              <>
-                <Image
-                  style={styles.image}
-                  source={
-                    pressed
-                      ? require("./../../assets/images/cat1.png")
-                      : require("./../../assets/images/gatto2.0.png")
-                  }
-                />
-              </>
-            )}
-          </Pressable>
+        <View
+          style={{
+            flex: 3,
+            flexDirection: "row",
+            marginTop: 50,
+            justifyContent: "center",
+          }}
+        >
+          <ModalSettings />
+          <Animatable.View>
+            <Image
+              style={styles.image}
+              source={require("./../../assets/images/gatto2.0.png")}
+            />
+          </Animatable.View>
+          <ModalAchievment />
+        </View>
 
-          {/* Mostra effetto animato quando c'è un tocco */}
-          {showEffect && (
-            <Animatable.View
-              animation="zoomIn"
-              duration={200} // Riduci la durata dell'animazione
-              style={[
-                styles.touchEffect,
-                {
-                  left: touchPosition.x - 50, // centriamo l'immagine
-                  top: touchPosition.y - 50,
-                },
-              ]}
-            >
-              <Image
-                source={require("../../assets/images/zampa.png")} // L'immagine che vuoi mostrare
-                style={styles.effectImage}
-              />
-            </Animatable.View>
-          )}
-        </Animatable.View>
-        <ModalAchievment />
-      </View>
+        {showEffect && (
+          <Animatable.View
+            animation="zoomIn"
+            duration={100} // Ridotto il tempo per rispondere più velocemente
+            style={[
+              styles.touchEffect,
+              {
+                left: touchPosition.x,
+                top: touchPosition.y,
+              },
+            ]}
+          >
+            <Image
+              source={require("../../assets/images/zampa.png")}
+              style={styles.effectImage}
+            />
+          </Animatable.View>
+        )}
+      </Pressable>
 
       <View className="flex flex-row justify-between border-y-2 border-secondary w-full p-3">
         <Text className="text-lg font-pregular ml-2 text-secondary">
@@ -184,8 +167,7 @@ const styles = StyleSheet.create({
     height: 25,
   },
   gattoClicker: {
-    width: 200,
-    height: 300,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
