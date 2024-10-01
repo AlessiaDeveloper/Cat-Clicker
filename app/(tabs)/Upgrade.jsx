@@ -54,13 +54,15 @@ export default function Upgrade() {
         )
       );
     }
+
+    // Applicare la funzione di upgrade solo se esiste
     if (upgradeFunctions[id]) {
       upgradeFunctions[id](
         displayScore,
         setDisplayScore,
         actualScore,
         setActualScore,
-        factories,
+        EdificiData,
         setFactories
       );
     }
@@ -83,7 +85,7 @@ export default function Upgrade() {
         </View>
 
         <Pressable
-          className="flex-row items-center p-3 rounded-md m-3"
+          className="flex-row items-center p-2 rounded-md m-1 mx-3"
           style={[
             styles.button, // Stile normale del bottone
             isDisabled ? styles.buttonDisabled : styles.buttonEnabled, // Stile disabilitato o abilitato
@@ -177,7 +179,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#5D2E8C",
   },
   containerEdifici: {
-    height: "48%",
+    height: "49%",
   },
 
   imageEdifici: {

@@ -15,8 +15,17 @@ export const upgradeFunctions = {
     setActualScore(newScore);
     setDisplayScore(newScore);
   },
-  3: (factories, setFactories) => {
-    // Incrementa la produzione di ogni fabbrica del 10%
-    setFactories((prevFactories) => prevFactories * 2);
+  3: (
+    displayScore,
+    setDisplayScore,
+    actualScore,
+    setActualScore,
+    edificiData
+  ) => {
+    // Incrementa del 10% l'increment di ogni edificio
+    edificiData.forEach((edificio) => {
+      edificio.increment = Math.floor(edificio.increment * 2);
+    });
+    // Se necessario, aggiornare lo stato o il rendering in altre parti dell'app
   },
 };

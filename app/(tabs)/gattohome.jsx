@@ -14,6 +14,7 @@ import ModalSettings from "../(modal)/ModalSettings";
 import ModalAchievment from "../(modal)/ModalAchievment";
 import GameContext from "../store/GameProvider";
 import EdificiPurchaseButton from "../components/EdificiPurchaseButton";
+import StrisciaBoost from "../components/StrisciaBoost";
 
 export default function GattoHome() {
   const {
@@ -114,6 +115,7 @@ export default function GattoHome() {
           </Animatable.View>
         )}
       </Pressable>
+      <StrisciaBoost />
 
       <View className="flex flex-row justify-between border-y-2 border-secondary w-full p-3">
         <Text className="text-lg font-pregular ml-2 text-secondary">
@@ -149,7 +151,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#5D2E8C",
   },
   containerEdifici: {
-    height: "49%",
+    height: "39%",
   },
   imageEdifici: {
     width: 110,
@@ -164,8 +166,17 @@ const styles = StyleSheet.create({
   imageIcon: {
     marginBottom: 3,
     width: 25,
-    height: 25,
+    height: 24,
   },
+  imageBoost: {
+    marginBottom: 3,
+    width: 40,
+    height: 40,
+    borderColor: "yellow",
+    borderWidth: 3,
+    backgroundColor: "purple",
+  },
+
   gattoClicker: {
     flex: 1,
     justifyContent: "center",
