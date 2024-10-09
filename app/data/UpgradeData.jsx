@@ -4,14 +4,14 @@ export default UpgradeData = [
     name: "Compra croccantini",
     requiredScat: 10, // Livello richiesto
     description: "ottieni croccantini",
-    image: require("./../../assets/images/bistrot.png"),
+    image: require("./../../assets/images/upgrade1.png"),
   },
   {
     id: "2",
     name: "Compra tanti croccantini",
     requiredScat: 40, // Livello richiesto
     description: "ottieni tanti croccantini",
-    image: require("./../../assets/images/bistrot.png"),
+    image: require("./../../assets/images/paradis.png"),
   },
   {
     id: "3",
@@ -36,23 +36,9 @@ export default UpgradeData = [
   },
   {
     id: "6",
-    name: "Autoproduzione croccantini",
-    requiredScat: 40, // Livello richiesto
-    description: "ottieni più croccantini aut.",
-    image: require("./../../assets/images/bistrot.png"),
-  },
-  {
-    id: "7",
-    name: "Croccantini maggiorati",
-    requiredScat: 40, // Livello richiesto
-    description: "Croccantini maggiorati 40/s",
-    image: require("./../../assets/images/bistrot.png"),
-  },
-  {
-    id: "8",
-    name: "Strutture maggiorate",
-    requiredScat: 40, // Livello richiesto
-    description: "Croccantini maggiorati 100/s",
+    name: "meno spawn red dot",
+    requiredScat: 50,
+    description: "diminuisce il tempo di spawn del red dot",
     image: require("./../../assets/images/bistrot.png"),
   },
 ];

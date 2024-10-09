@@ -6,12 +6,20 @@ import React, {
   useRef,
 } from "react";
 import EdificiData from "../data/EdificiData";
+import Achievment from "../data/Achievment";
 
 // Crea il contesto
 const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
   const [scatolette, setScatolette] = useState(0);
+  const [achievements, setAchievements] = useState(
+    Achievment.map((achievement) => ({
+      //prende tutti gli achievment e gli imposta claimed false di default
+      ...achievement,
+      claimed: false,
+    }))
+  );
   const [actualScore, setActualScore] = useState(100000);
   const [displayScore, setDisplayScore] = useState(100000);
   const [factories, setFactories] = useState(0);
@@ -84,6 +92,8 @@ export const GameProvider = ({ children }) => {
         setActualScore,
         factories,
         setFactories,
+        achievements,
+        setAchievements,
         levels,
         costs,
         handleLevelUp,

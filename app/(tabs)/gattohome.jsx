@@ -6,15 +6,12 @@ import {
   View,
   Text,
   Image,
-  Pressable,
 } from "react-native";
-import * as Animatable from "react-native-animatable";
 import EdificiData from "../data/EdificiData";
-import ModalSettings from "../(modal)/ModalSettings";
-import ModalAchievment from "../(modal)/ModalAchievment";
 import GameContext from "../store/GameProvider";
 import EdificiPurchaseButton from "../components/EdificiPurchaseButton";
 import StrisciaBoost from "../components/StrisciaBoost";
+import GattoClicker from "../components/GattoClicker";
 
 export default function GattoHome() {
   const {
@@ -27,20 +24,6 @@ export default function GattoHome() {
     costs,
     handleLevelUp,
   } = useContext(GameContext);
-
-  const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
-  const [showEffect, setShowEffect] = useState(false);
-
-  const handlePressIn = (e) => {
-    const { pageX, pageY } = e.nativeEvent;
-    setTouchPosition({ x: pageX - 25, y: pageY - 25 }); // Centrato
-    setShowEffect(true);
-    setActualScore((current) => current + 1); // Incremento immediato al tocco
-  };
-
-  const handlePressOut = () => {
-    setShowEffect(false);
-  };
 
   const renderItem = ({ item }) => {
     return (
@@ -73,48 +56,7 @@ export default function GattoHome() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Pressable
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-        style={styles.gattoClicker}
-      >
-        <View
-          style={{
-            flex: 3,
-            flexDirection: "row",
-            marginTop: 50,
-            justifyContent: "center",
-          }}
-        >
-          <ModalSettings />
-          <Animatable.View>
-            <Image
-              style={styles.image}
-              source={require("./../../assets/images/gatto2.0.png")}
-            />
-          </Animatable.View>
-          <ModalAchievment />
-        </View>
-
-        {showEffect && (
-          <Animatable.View
-            animation="zoomIn"
-            duration={100} // Ridotto il tempo per rispondere più velocemente
-            style={[
-              styles.touchEffect,
-              {
-                left: touchPosition.x,
-                top: touchPosition.y,
-              },
-            ]}
-          >
-            <Image
-              source={require("../../assets/images/zampa.png")}
-              style={styles.effectImage}
-            />
-          </Animatable.View>
-        )}
-      </Pressable>
+      <GattoClicker setActualScore={setActualScore} />
       <StrisciaBoost />
 
       <View className="flex flex-row justify-between border-y-2 border-secondary w-full p-3">
@@ -159,10 +101,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     margin: 2,
   },
-  image: {
-    width: 200,
-    height: 300,
-  },
+
   imageIcon: {
     marginBottom: 3,
     width: 25,
@@ -175,23 +114,5 @@ const styles = StyleSheet.create({
     borderColor: "yellow",
     borderWidth: 3,
     backgroundColor: "purple",
-  },
-
-  gattoClicker: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  touchEffect: {
-    position: "absolute",
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
-  },
-  effectImage: {
-    width: 50,
-    height: 50,
-    resizeMode: "contain",
   },
 });

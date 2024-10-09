@@ -16,23 +16,8 @@ import EdificiData from "../data/EdificiData"; // Importa i dati degli edifici
 
 export default function ModalAchievment() {
   const [modalVisible, setModalVisible] = useState(false);
-  const { scatolette, setScatolette, levels } = useContext(GameContext);
-
-  // Stato per gestire se l'achievement è stato riscattato
-  const [achievements, setAchievements] = useState(
-    Achievment.map((achievement) => ({
-      //prende tutti gli achievment e gli imposta claimed false di default
-      ...achievement,
-      claimed: false,
-    }))
-  );
-  // useEffect(() => {
-  //   async function hideNavigationBar() {
-  //     await NavigationBar.setVisibilityAsync("hidden");
-  //     await NavigationBar.setBehaviorAsync("overlay-swipe");
-  //   }
-  //   hideNavigationBar();
-  // }, []);
+  const { scatolette, setScatolette, levels, achievements, setAchievements } =
+    useContext(GameContext);
 
   const incrementCurrency = (id, amount) => {
     setScatolette(scatolette + amount); // Incrementa la valuta speciale

@@ -14,6 +14,8 @@ import ModalAchievment from "../(modal)/ModalAchievment";
 import GameContext from "../store/GameProvider";
 import UpgradeData from "../data/UpgradeData";
 import { upgradeFunctions } from "../utils/upgradeFunctions";
+import GattoClicker from "../components/GattoClicker";
+import StrisciaBoost from "../components/StrisciaBoost";
 
 export default function Upgrade() {
   const {
@@ -107,34 +109,8 @@ export default function Upgrade() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View
-        style={{
-          flex: 3,
-          flexDirection: "row",
-          marginTop: 50,
-          justifyContent: "center",
-        }}
-      >
-        <ModalSettings />
-        <Animatable.View ref={buttonRef}>
-          <Pressable
-            ref={buttonRef}
-            style={({ pressed }) => [
-              {
-                backgroundColor: pressed ? "#5D2E8C" : "#5D2E8C",
-                opacity: pressed ? 0.8 : 1,
-              },
-              styles.gattoClicker,
-            ]}
-          >
-            <Image
-              style={styles.image}
-              source={require("./../../assets/images/gatto2.0.png")}
-            />
-          </Pressable>
-        </Animatable.View>
-        <ModalAchievment />
-      </View>
+      <GattoClicker />
+      <StrisciaBoost />
 
       <View className="flex flex-row justify-between border-y-2 border-secondary w-full p-3">
         <Text className="text-lg font-pregular ml-2 text-secondary">
@@ -179,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#5D2E8C",
   },
   containerEdifici: {
-    height: "49%",
+    height: "39%",
   },
 
   imageEdifici: {
@@ -188,10 +164,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     margin: 2,
   },
-  image: {
-    width: 200,
-    height: 300,
-  },
+
   imageIcon: {
     marginBottom: 3,
     width: 25,

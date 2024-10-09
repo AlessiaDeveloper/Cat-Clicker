@@ -1,4 +1,4 @@
-export default UpgradeData = [
+export default RinascitaData = [
   {
     id: "1",
     name: "Costo degli edifici diminuito",
@@ -9,17 +9,38 @@ export default UpgradeData = [
   },
   {
     id: "2",
-    name: "Croccantini guadagnati alla rinascita",
+    name: "Croccantini al rebirth",
     requiredValuta: 50,
-    description: "Croccantini guadagnati alla rinascita",
+    description: "Crocc alla rinascita",
     image: require("./../../assets/images/bistrot.png"),
   },
   //non so se metterlo negli upgrade o qui
   {
     id: "3",
-    name: "diminuisce il tempo di spawn del puntino rosso",
+    name: "Staff costa meno",
     requiredValuta: 50,
-    description: "diminuisce il tempo di spawn del puntino rosso",
+    description: "LO staff costa meno",
+    image: require("./../../assets/images/bistrot.png"),
+  },
+  {
+    id: "4",
+    name: "Autoproduzione croccantini",
+    requiredValuta: 40, // Livello richiesto
+    description: "ottieni più croccantini aut.",
+    image: require("./../../assets/images/bistrot.png"),
+  },
+  {
+    id: "5",
+    name: "Croccantini maggiorati",
+    requiredValuta: 40, // Livello richiesto
+    description: "Croccantini maggiorati 40/s",
+    image: require("./../../assets/images/bistrot.png"),
+  },
+  {
+    id: "6",
+    name: "Strutture maggiorate",
+    requiredValuta: 40, // Livello richiesto
+    description: "Croccantini maggiorati 100/s",
     image: require("./../../assets/images/bistrot.png"),
   },
 ];
