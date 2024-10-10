@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import EdificiData from "../data/EdificiData";
 import Achievment from "../data/Achievment";
+import RinascitaData from "../data/RinascitaData";
 
 // Crea il contesto
 const GameContext = createContext();
@@ -20,6 +21,21 @@ export const GameProvider = ({ children }) => {
       claimed: false,
     }))
   );
+  // Stato locale per tenere traccia dei costi aggiornati per ogni upgrade
+  const [upgrades, setUpgrades] = useState(
+    UpgradeData.map((upgrade) => ({
+      ...upgrade,
+      currentCost: upgrade.requiredScat, // Inizialmente il costo è quello definito in UpgradeData
+    }))
+  );
+  const [counterRinascita, setCounterRinascita] = useState(0);
+  const [rinascitas, setRinascitas] = useState(
+    RinascitaData.map((rinascita) => ({
+      ...rinascita,
+      currentCost: rinascita.requiredValuta, // Inizialmente il costo è quello definito in RinascitaData
+    }))
+  );
+
   const [actualScore, setActualScore] = useState(100000);
   const [displayScore, setDisplayScore] = useState(100000);
   const [factories, setFactories] = useState(0);
@@ -97,6 +113,12 @@ export const GameProvider = ({ children }) => {
         levels,
         costs,
         handleLevelUp,
+        upgrades,
+        setUpgrades,
+        counterRinascita,
+        setCounterRinascita,
+        rinascitas,
+        setRinascitas,
       }}
     >
       {children}

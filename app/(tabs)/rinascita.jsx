@@ -91,7 +91,7 @@ export default function Rinascita() {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <GattoClicker />
+      <GattoClicker setActualScore={setActualScore} />
       <StrisciaBoost />
 
       <View className="flex flex-row justify-between border-y-2 bg-white border-primary w-full p-3">
