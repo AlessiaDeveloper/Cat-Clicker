@@ -23,32 +23,20 @@ export default function Rinascita() {
     setDisplayScore,
     actualScore,
     setActualScore,
+    counterRinascitaProv,
+    setCounterRinascitaProv,
     factories,
     setFactories,
   } = useContext(GameContext);
-  const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
-  const [showEffect, setShowEffect] = useState(false);
-  const [counterRinascita, setCounterRinascita] = useState(0);
+
   const [rinascitas, setRinascitas] = useState(
     RinascitaData.map((rinascita) => ({
       ...rinascita,
-      currentCost: rinascita.requiredValuta, // Inizialmente il costo è quello definito in RinascitaData
+      currentCost: rinascita.requiredValuta,
     }))
   );
 
-  const handlePressIn = (e) => {
-    const { pageX, pageY } = e.nativeEvent;
-    setTouchPosition({ x: pageX - 25, y: pageY - 25 }); // Centrato
-    setShowEffect(true);
-    setActualScore((current) => current + 1); // Incremento immediato al tocco
-  };
-
-  const handlePressOut = () => {
-    setShowEffect(false);
-  };
-
   const renderItem = ({ item }) => {
-    // Controlla se il bottone deve essere disabilitato
     const isDisabled = scatolette < item.currentCost;
 
     return (
@@ -72,17 +60,17 @@ export default function Rinascita() {
         <Pressable
           className="flex-row items-center p-2 rounded-md m-1 mx-3"
           style={[
-            styles.button, // Stile normale del bottone
-            isDisabled ? styles.buttonDisabled : styles.buttonEnabled, // Stile disabilitato o abilitato
+            styles.button,
+            isDisabled ? styles.buttonDisabled : styles.buttonEnabled,
           ]}
-          onPress={() => handleUpgradePurchase(item.id)} // Gestisci l'acquisto qui
-          disabled={isDisabled} // Disabilita il bottone se non ci sono abbastanza scatolette
+          onPress={() => handleUpgradePurchase(item.id)}
+          disabled={isDisabled}
         >
           <Text className="font-pregular text-primary">
             {item.currentCost} {""}
           </Text>
           <Image
-            style={styles.imageIcon}
+            className="w-6 h-5 mx-2"
             source={require("../../assets/images/rebirth.png")}
           />
         </Pressable>
@@ -97,13 +85,13 @@ export default function Rinascita() {
       <View className="flex flex-row justify-between border-y-2 bg-white border-primary w-full p-3">
         <Text className="text-lg font-pregular ml-2  text-primary">
           <Image
-            style={styles.imageIcon}
+            className="w-6 h-5 mx-2"
             source={require("../../assets/images/rebirth.png")}
           />
           <Text> Stelline da ottenere </Text>
         </Text>
         <Text className="text-lg font-pregular ml-2 text-primary">
-          {counterRinascita}{" "}
+          {counterRinascitaProv}{" "}
         </Text>
       </View>
 
@@ -133,12 +121,6 @@ const styles = StyleSheet.create({
     height: 50,
     resizeMode: "contain",
     margin: 2,
-  },
-
-  imageIcon: {
-    marginBottom: 3,
-    width: 25,
-    height: 25,
   },
   imageBoost: {
     marginBottom: 3,

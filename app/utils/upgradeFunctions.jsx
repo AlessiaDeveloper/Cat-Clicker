@@ -26,6 +26,5 @@ export const upgradeFunctions = {
     edificiData.forEach((edificio) => {
       edificio.increment = Math.floor(edificio.increment * 2);
     });
-    // Se necessario, aggiornare lo stato o il rendering in altre parti dell'app
   },
 };

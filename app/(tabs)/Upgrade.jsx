@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,14 +8,13 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import * as Animatable from "react-native-animatable";
-import ModalSettings from "../(modal)/ModalSettings";
-import ModalAchievment from "../(modal)/ModalAchievment";
+
 import GameContext from "../store/GameProvider";
 import UpgradeData from "../data/UpgradeData";
 import { upgradeFunctions } from "../utils/upgradeFunctions";
 import GattoClicker from "../components/GattoClicker";
 import StrisciaBoost from "../components/StrisciaBoost";
+import StrisciaValute from "../components/StrisciaValute";
 
 export default function Upgrade() {
   const {
@@ -25,29 +24,20 @@ export default function Upgrade() {
     setDisplayScore,
     actualScore,
     setActualScore,
-    factories,
     setFactories,
   } = useContext(GameContext);
 
-  const buttonRef = useRef(null);
-
-  // Stato locale per tenere traccia dei costi aggiornati per ogni upgrade
   const [upgrades, setUpgrades] = useState(
     UpgradeData.map((upgrade) => ({
       ...upgrade,
-      currentCost: upgrade.requiredScat, // Inizialmente il costo è quello definito in UpgradeData
+      currentCost: upgrade.requiredScat,
     }))
   );
 
-  // Funzione per gestire l'acquisto di un upgrade
   const handleUpgradePurchase = (id) => {
     const selectedUpgrade = upgrades.find((upgrade) => upgrade.id === id);
-
     if (scatolette >= selectedUpgrade.currentCost) {
-      // Se ci sono abbastanza scatolette, riduci il numero di scatolette e aumenta il costo dell'upgrade
       setScatolette(scatolette - selectedUpgrade.currentCost);
-
-      // Aggiorna il costo dell'upgrade di 5 scatolette
       setUpgrades((prevUpgrades) =>
         prevUpgrades.map((upgrade) =>
           upgrade.id === id
@@ -56,8 +46,6 @@ export default function Upgrade() {
         )
       );
     }
-
-    // Applicare la funzione di upgrade solo se esiste
     if (upgradeFunctions[id]) {
       upgradeFunctions[id](
         displayScore,
@@ -71,9 +59,7 @@ export default function Upgrade() {
   };
 
   const renderItem = ({ item }) => {
-    // Controlla se il bottone deve essere disabilitato
     const isDisabled = scatolette < item.currentCost;
-
     return (
       <View className="flex flex-row border-t-2 border-primary items-center justify-between bg-white">
         <Image source={item.image} style={styles.imageEdifici} />
@@ -85,15 +71,14 @@ export default function Upgrade() {
             {item.description}
           </Text>
         </View>
-
         <Pressable
           className="flex-row items-center p-2 rounded-md m-1 mx-3"
           style={[
-            styles.button, // Stile normale del bottone
-            isDisabled ? styles.buttonDisabled : styles.buttonEnabled, // Stile disabilitato o abilitato
+            styles.button,
+            isDisabled ? styles.buttonDisabled : styles.buttonEnabled,
           ]}
-          onPress={() => handleUpgradePurchase(item.id)} // Gestisci l'acquisto qui
-          disabled={isDisabled} // Disabilita il bottone se non ci sono abbastanza scatolette
+          onPress={() => handleUpgradePurchase(item.id)}
+          disabled={isDisabled}
         >
           <Text className="font-pregular text-secondary">
             {item.currentCost} {""}
@@ -111,32 +96,8 @@ export default function Upgrade() {
     <SafeAreaView style={styles.container}>
       <GattoClicker setActualScore={setActualScore} />
       <StrisciaBoost />
-
-      <View className="flex flex-row justify-between border-y-2 border-secondary w-full p-3">
-        <Text className="text-lg font-pregular ml-2 text-secondary">
-          <Image
-            style={styles.imageIcon}
-            source={require("../../assets/images/scatoletta.png")}
-          />
-          <Text> {"  "}</Text>
-          {scatolette}
-        </Text>
-
-        <Text className="text-lg font-pregular text-secondary">
-          {displayScore}
-        </Text>
-      </View>
-
+      <StrisciaValute />
       <SafeAreaView style={styles.containerEdifici}>
-        <View className="text-lg font-pregular flex-wrap p-4 flex-row justify-center text-primary border-primary text-center bg-white">
-          <Image
-            style={styles.imageIcona}
-            source={require("../../assets/images/scatolette.png")}
-          />
-          <Text className="text-xl px-2 font-pregular text-primary border-primary text-center bg-white">
-            Usa le scatolette per gli upgrade permanenti
-          </Text>
-        </View>
         <FlatList
           data={upgrades}
           renderItem={renderItem}
@@ -155,24 +116,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#5D2E8C",
   },
   containerEdifici: {
-    height: "39%",
+    height: "42%",
   },
-
   imageEdifici: {
     width: 70,
     height: 50,
     resizeMode: "contain",
     margin: 2,
   },
-
   imageIcon: {
     marginBottom: 3,
     width: 25,
     height: 25,
-  },
-  imageIcona: {
-    width: 60,
-    height: 60,
   },
   button: {
     padding: 10,
@@ -180,9 +135,9 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   buttonEnabled: {
-    backgroundColor: "#5D2E8C", // Colore del bottone quando abilitato
+    backgroundColor: "#5D2E8C",
   },
   buttonDisabled: {
-    backgroundColor: "#B0B0B0", // Colore del bottone quando disabilitato
+    backgroundColor: "#B0B0B0",
   },
 });

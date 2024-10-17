@@ -35,6 +35,7 @@ export const GameProvider = ({ children }) => {
       currentCost: rinascita.requiredValuta, // Inizialmente il costo è quello definito in RinascitaData
     }))
   );
+  const [counterRinascitaProv, setCounterRinascitaProv] = useState(0);
 
   const [actualScore, setActualScore] = useState(100000);
   const [displayScore, setDisplayScore] = useState(100000);
@@ -119,6 +120,8 @@ export const GameProvider = ({ children }) => {
         setCounterRinascita,
         rinascitas,
         setRinascitas,
+        counterRinascitaProv,
+        setCounterRinascitaProv,
       }}
     >
       {children}

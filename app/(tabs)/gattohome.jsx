@@ -12,11 +12,10 @@ import GameContext from "../store/GameProvider";
 import EdificiPurchaseButton from "../components/EdificiPurchaseButton";
 import StrisciaBoost from "../components/StrisciaBoost";
 import GattoClicker from "../components/GattoClicker";
+import StrisciaValute from "../components/StrisciaValute";
 
 export default function GattoHome() {
   const {
-    scatolette,
-    displayScore,
     actualScore,
     setActualScore,
     setFactories,
@@ -27,7 +26,7 @@ export default function GattoHome() {
 
   const renderItem = ({ item }) => {
     return (
-      <View className="flex flex-row border-b-2 border-primary items-center justify-between bg-white">
+      <View className="flex flex-row border-t-2 border-primary items-center justify-between bg-white">
         <Image source={item.image} style={styles.imageEdifici} />
         <View className="flex-col items-center">
           <Text className="font-pregular text-primary text-lg">
@@ -40,7 +39,6 @@ export default function GattoHome() {
             {item.increment}/sec
           </Text>
         </View>
-
         <EdificiPurchaseButton
           cost={costs[item.levelKey]}
           increment={item.increment}
@@ -58,22 +56,7 @@ export default function GattoHome() {
     <SafeAreaView style={styles.container}>
       <GattoClicker setActualScore={setActualScore} />
       <StrisciaBoost />
-
-      <View className="flex flex-row justify-between border-y-2 border-secondary w-full p-3">
-        <Text className="text-lg font-pregular ml-2 text-secondary">
-          <Image
-            style={styles.imageIcon}
-            source={require("../../assets/images/scatoletta.png")}
-          />
-          <Text> {"  "}</Text>
-          {scatolette}
-        </Text>
-
-        <Text className="text-lg font-pregular text-secondary">
-          {displayScore}
-        </Text>
-      </View>
-
+      <StrisciaValute />
       <SafeAreaView style={styles.containerEdifici}>
         <FlatList
           data={EdificiData}
@@ -93,19 +76,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#5D2E8C",
   },
   containerEdifici: {
-    height: "39%",
+    height: "42%",
   },
   imageEdifici: {
     width: 110,
     height: 80,
     resizeMode: "contain",
     margin: 2,
-  },
-
-  imageIcon: {
-    marginBottom: 3,
-    width: 25,
-    height: 24,
   },
   imageBoost: {
     marginBottom: 3,
