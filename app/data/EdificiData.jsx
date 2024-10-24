@@ -1,6 +1,15 @@
 export default EdificiData = [
   {
     id: "1",
+    name: "zampa",
+    image: require("./../../assets/images/zampa.png"),
+    cost: 50,
+    levelKey: "zampa", // Chiave per accedere al livello nel tuo stato
+    baseClickIncrement: 1, // Incremento di base per click
+    incrementPerLevel: 0.5, // Incremento per ogni livello aggiuntivo
+  },
+  {
+    id: "13",
     name: "Bistrot",
     image: require("./../../assets/images/bistrot.png"),
     cost: 50,

@@ -5,7 +5,7 @@ export default RinascitaData = [
     //il counter devo ancora scegliere cosa sarà
     requiredValuta: 50,
     description: "Costo degli edifici diminuito",
-    image: require("./../../assets/images/bistrot.png"),
+    image: require("./../../assets/images/sconti.png"),
   },
   {
     id: "2",

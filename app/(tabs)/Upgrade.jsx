@@ -102,6 +102,7 @@ export default function Upgrade() {
           data={upgrades}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
+          initialNumToRender={4}
         />
       </SafeAreaView>
     </SafeAreaView>

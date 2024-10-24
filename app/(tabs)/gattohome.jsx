@@ -13,6 +13,7 @@ import EdificiPurchaseButton from "../components/EdificiPurchaseButton";
 import StrisciaBoost from "../components/StrisciaBoost";
 import GattoClicker from "../components/GattoClicker";
 import StrisciaValute from "../components/StrisciaValute";
+import ClickButton from "../components/ClickButton";
 
 export default function GattoHome() {
   const {
@@ -30,14 +31,18 @@ export default function GattoHome() {
         <Image source={item.image} style={styles.imageEdifici} />
         <View className="flex-col items-center">
           <Text className="font-pregular text-primary text-lg">
-            {item.name}
+            {" "}
+            {item.name}{" "}
           </Text>
           <Text className="font-pregular text-primary text-md">
-            Level {levels[item.levelKey]}
+            {" "}
+            Level {levels[item.levelKey]}{" "}
           </Text>
-          <Text className="font-pregular text-primary rounded-md p-1 bg-secondary text-xs">
-            {item.increment}/sec
-          </Text>
+          {item.increment !== undefined && (
+            <Text className="font-pregular text-primary rounded-md p-1 bg-secondary text-xs">
+              {item.increment}/sec
+            </Text>
+          )}
         </View>
         <EdificiPurchaseButton
           cost={costs[item.levelKey]}
@@ -79,8 +84,8 @@ const styles = StyleSheet.create({
     height: "42%",
   },
   imageEdifici: {
-    width: 110,
-    height: 80,
+    width: 90,
+    height: 60,
     resizeMode: "contain",
     margin: 2,
   },

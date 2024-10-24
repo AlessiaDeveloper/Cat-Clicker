@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-} from "react";
+import React, { createContext, useState, useEffect, useCallback } from "react";
 import EdificiData from "../data/EdificiData";
 import Achievment from "../data/Achievment";
 import RinascitaData from "../data/RinascitaData";
@@ -16,23 +10,21 @@ export const GameProvider = ({ children }) => {
   const [scatolette, setScatolette] = useState(0);
   const [achievements, setAchievements] = useState(
     Achievment.map((achievement) => ({
-      //prende tutti gli achievment e gli imposta claimed false di default
       ...achievement,
       claimed: false,
     }))
   );
-  // Stato locale per tenere traccia dei costi aggiornati per ogni upgrade
   const [upgrades, setUpgrades] = useState(
     UpgradeData.map((upgrade) => ({
       ...upgrade,
-      currentCost: upgrade.requiredScat, // Inizialmente il costo è quello definito in UpgradeData
+      currentCost: upgrade.requiredScat,
     }))
   );
   const [counterRinascita, setCounterRinascita] = useState(0);
   const [rinascitas, setRinascitas] = useState(
     RinascitaData.map((rinascita) => ({
       ...rinascita,
-      currentCost: rinascita.requiredValuta, // Inizialmente il costo è quello definito in RinascitaData
+      currentCost: rinascita.requiredValuta,
     }))
   );
   const [counterRinascitaProv, setCounterRinascitaProv] = useState(0);
@@ -42,18 +34,18 @@ export const GameProvider = ({ children }) => {
   const [factories, setFactories] = useState(0);
   const [levels, setLevels] = useState(
     EdificiData.reduce((acc, building) => {
-      acc[building.levelKey] = 0; // Imposta tutti i livelli inizialmente a 0
+      acc[building.levelKey] = 0;
       return acc;
     }, {})
   );
   const [costs, setCosts] = useState(
     EdificiData.reduce((acc, building) => {
-      acc[building.levelKey] = building.cost; // Imposta il costo iniziale
+      acc[building.levelKey] = building.cost;
       return acc;
     }, {})
   );
 
-  // Funzione per incrementare gradualmente lo score (spostata dal componente)
+  // Funzione per incrementare gradualmente lo score
   const incrementScoreGradually = useCallback(() => {
     const difference = actualScore - displayScore;
     if (difference > 0) {
@@ -98,6 +90,17 @@ export const GameProvider = ({ children }) => {
     [setLevels, setCosts]
   );
 
+  // Funzione per gestire i click che incrementano il valore del punteggio
+  const handleClick = useCallback(
+    (building) => {
+      const currentLevel = levels[building.levelKey];
+      const clickValue =
+        building.baseClickIncrement + currentLevel * building.incrementPerLevel;
+      setActualScore((prevScore) => prevScore + clickValue);
+    },
+    [levels, setActualScore]
+  );
+
   return (
     <GameContext.Provider
       value={{
@@ -114,6 +117,7 @@ export const GameProvider = ({ children }) => {
         levels,
         costs,
         handleLevelUp,
+        handleClick, // Esponi la funzione per l'utilizzo nei componenti
         upgrades,
         setUpgrades,
         counterRinascita,

@@ -25,14 +25,14 @@ export default UpgradeData = [
     name: "Efficienza offline",
     requiredScat: 40, // Livello richiesto
     description: "aumento croccantini off.",
-    image: require("./../../assets/images/bistrot.png"),
+    image: require("./../../assets/images/offline.png"),
   },
   {
     id: "5",
     name: "Più tempo Offline",
     requiredScat: 40, // Livello richiesto
     description: "Più tempo produttivo Offline",
-    image: require("./../../assets/images/bistrot.png"),
+    image: require("./../../assets/images/orologio.png"),
   },
   {
     id: "6",
