@@ -8,9 +8,9 @@ const StrisciaBoost = () => {
 
   const [autoClickActive, setAutoClickActive] = useState(false);
   const [cooldownTime, setCooldownTime] = useState(0);
-  const [regenTimeInMinutes, setRegenTimeInMinutes] = useState(0); // gestisce il tempo in minuti
+  const [regenTimeInMinutes, setRegenTimeInMinutes] = useState(0);
   const [boostActive, setBoostActive] = useState(false); // Stato per il boost della stella
-  const [boostCooldown, setBoostCooldown] = useState(0); // Cooldown per il boost della stella
+  const [boostCooldown, setBoostCooldown] = useState(0);
 
   const intervalRef = useRef(null);
 
@@ -18,13 +18,14 @@ const StrisciaBoost = () => {
     if (regenTimeInMinutes > 0 || autoClickActive) return;
 
     setAutoClickActive(true);
-    setCooldownTime(60); // 1 minuto di cooldown in secondi
-    setRegenTimeInMinutes(240); // 4 ore = 240 minuti
+    setCooldownTime(60);
+    setRegenTimeInMinutes(240);
 
     // Inizia l'autoclick per 60 secondi
     intervalRef.current = setInterval(() => {
       setActualScore((currentScore) => {
-        const newScore = currentScore + (boostActive ? 1.5 : 1); // Aggiungi il 50% se il boost è attivo
+        const increment = boostActive ? 1.5 : 1; // Valore aumentato del 50% se boost attivo
+        const newScore = currentScore + increment;
         setDisplayScore(newScore);
         return newScore;
       });
@@ -41,7 +42,7 @@ const StrisciaBoost = () => {
     if (boostCooldown > 0 || boostActive) return;
 
     setBoostActive(true);
-    setBoostCooldown(240); // Cooldown di 4 ore (240 minuti)
+    setBoostCooldown(240); // Cooldown di 4 ore
 
     // Disattiva il boost dopo 1 minuto
     setTimeout(() => {
@@ -49,7 +50,6 @@ const StrisciaBoost = () => {
     }, 60000);
   };
 
-  // Aggiorna il cooldownTime ogni secondo
   useEffect(() => {
     if (cooldownTime > 0) {
       const cooldownInterval = setInterval(() => {
@@ -59,41 +59,35 @@ const StrisciaBoost = () => {
     }
   }, [cooldownTime]);
 
-  // Aggiorna il regenTimeInMinutes solo ogni minuto
   useEffect(() => {
     if (regenTimeInMinutes > 0) {
       const regenInterval = setInterval(() => {
         setRegenTimeInMinutes((prev) => prev - 1);
-      }, 60000); // Aggiorna ogni 60 secondi (1 minuto)
+      }, 60000);
       return () => clearInterval(regenInterval);
     }
   }, [regenTimeInMinutes]);
 
-  // Aggiorna il boostCooldown ogni minuto
   useEffect(() => {
     if (boostCooldown > 0) {
       const boostCooldownInterval = setInterval(() => {
         setBoostCooldown((prev) => prev - 1);
-      }, 60000); // Aggiorna ogni minuto
+      }, 60000);
       return () => clearInterval(boostCooldownInterval);
     }
   }, [boostCooldown]);
 
-  // Funzione per formattare solo il cooldown in mm:ss
   const formatCooldown = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = timeInSeconds % 60;
-
     return `${minutes.toString().padStart(2, "0")}:${seconds
       .toString()
       .padStart(2, "0")}`;
   };
 
-  // Funzione per formattare il regenTime solo in ore e minuti
   const formatRegenTime = (timeInMinutes) => {
     const hours = Math.floor(timeInMinutes / 60);
     const minutes = timeInMinutes % 60;
-
     return `${hours.toString().padStart(2, "0")}:${minutes
       .toString()
       .padStart(2, "0")}`;
@@ -106,18 +100,18 @@ const StrisciaBoost = () => {
           className={`flex flex-col mr-3 border-2 rounded-md border-secondary items-center justify-center ${
             cooldownTime > 0 || regenTimeInMinutes > 0 ? "opacity-50" : ""
           }`}
-          style={styles.buttonContainer} // Usa lo stile per layout
+          style={styles.buttonContainer}
         >
           <Pressable
             onPress={handleAutoClick}
             disabled={cooldownTime > 0 || regenTimeInMinutes > 0}
-            className={`  ${
+            className={`${
               cooldownTime > 0 || regenTimeInMinutes > 0 ? "opacity-50" : ""
             }`}
-            style={styles.pressableButton} // Aggiungi stile anche qui se necessario
+            style={styles.pressableButton}
           >
             <Image
-              style={styles.image} // Applica stile per centrare
+              style={styles.image}
               source={require("../../assets/images/zampa.png")}
             />
             <Text className="font-pregular text-secondary justify-center w-10 px-1 text-xs">
@@ -153,7 +147,7 @@ const StrisciaBoost = () => {
 
         <Pressable
           className="flex flex-col mr-3 border-2 rounded-md border-secondary items-center justify-center"
-          style={styles.pressableButton} // Aggiungi stile anche qui se necessario
+          style={styles.pressableButton}
         >
           <Image
             style={styles.imageBoost}
@@ -180,18 +174,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonContainer: {
-    alignItems: "center", // Centra orizzontalmente
-    justifyContent: "center", // Centra verticalmente
+    alignItems: "center",
+    justifyContent: "center",
     padding: 2,
   },
   pressableButton: {
-    alignItems: "center", // Centra il contenuto del pulsante
+    alignItems: "center",
     justifyContent: "center",
   },
   image: {
-    width: 36, // Definisci la dimensione dell'immagine
+    width: 36,
     height: 36,
-    resizeMode: "contain", // Assicura che l'immagine si adatti
+    resizeMode: "contain",
   },
 });
 
