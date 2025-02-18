@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,11 +9,12 @@ import {
 } from "react-native";
 import EdificiData from "../data/EdificiData";
 import GameContext from "../store/GameProvider";
+import BoostContext from "../store/BoostProvider";
 import EdificiPurchaseButton from "../components/EdificiPurchaseButton";
 import StrisciaBoost from "../components/StrisciaBoost";
 import GattoClicker from "../components/GattoClicker";
 import StrisciaValute from "../components/StrisciaValute";
-import ClickButton from "../components/ClickButton";
+import Click from "../components/Click";
 
 export default function GattoHome() {
   const {
@@ -25,22 +26,30 @@ export default function GattoHome() {
     handleLevelUp,
   } = useContext(GameContext);
 
+  const { clessidraBoostActive } = useContext(BoostContext);
+
   const renderItem = ({ item }) => {
+    const increment = clessidraBoostActive
+      ? item.increment * 2
+      : item.increment;
+
     return (
-      <View className="flex flex-row border-t-2 border-primary items-center justify-between bg-white">
-        <Image source={item.image} style={styles.imageEdifici} />
+      <View className="flex flex-row border-primary items-center justify-between bg-white">
+        <Image
+          source={item.image}
+          resizeMode="contain"
+          className="w-20 h-20 mx-2"
+        />
         <View className="flex-col items-center">
           <Text className="font-pregular text-primary text-lg">
-            {" "}
-            {item.name}{" "}
+            {item.name}
           </Text>
           <Text className="font-pregular text-primary text-md">
-            {" "}
-            Level {levels[item.levelKey]}{" "}
+            Level {levels[item.levelKey]}
           </Text>
           {item.increment !== undefined && (
             <Text className="font-pregular text-primary rounded-md p-1 bg-secondary text-xs">
-              {item.increment}/sec
+              {increment}/sec
             </Text>
           )}
         </View>
@@ -63,6 +72,7 @@ export default function GattoHome() {
       <StrisciaBoost />
       <StrisciaValute />
       <SafeAreaView style={styles.containerEdifici}>
+        <Click />
         <FlatList
           data={EdificiData}
           renderItem={renderItem}
@@ -81,20 +91,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#5D2E8C",
   },
   containerEdifici: {
-    height: "42%",
-  },
-  imageEdifici: {
-    width: 90,
-    height: 60,
-    resizeMode: "contain",
-    margin: 2,
-  },
-  imageBoost: {
-    marginBottom: 3,
-    width: 40,
-    height: 40,
-    borderColor: "yellow",
-    borderWidth: 3,
-    backgroundColor: "purple",
+    height: "38%",
   },
 });

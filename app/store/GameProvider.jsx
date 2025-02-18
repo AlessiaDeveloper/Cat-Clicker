@@ -1,25 +1,32 @@
-import React, { createContext, useState, useEffect, useCallback } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+} from "react";
 import EdificiData from "../data/EdificiData";
 import Achievment from "../data/Achievment";
 import RinascitaData from "../data/RinascitaData";
 
-// Crea il contesto
 const GameContext = createContext();
-
 export const GameProvider = ({ children }) => {
+  //sez SCATOLETTE
   const [scatolette, setScatolette] = useState(0);
-  const [achievements, setAchievements] = useState(
-    Achievment.map((achievement) => ({
-      ...achievement,
-      claimed: false,
-    }))
-  );
   const [upgrades, setUpgrades] = useState(
     UpgradeData.map((upgrade) => ({
       ...upgrade,
       currentCost: upgrade.requiredScat,
     }))
   );
+  const [achievements, setAchievements] = useState(
+    Achievment.map((achievement) => ({
+      ...achievement,
+      claimed: false,
+    }))
+  );
+
+  //sez RINASCITA
   const [counterRinascita, setCounterRinascita] = useState(0);
   const [rinascitas, setRinascitas] = useState(
     RinascitaData.map((rinascita) => ({
@@ -29,21 +36,9 @@ export const GameProvider = ({ children }) => {
   );
   const [counterRinascitaProv, setCounterRinascitaProv] = useState(0);
 
+  //sez SCORE
   const [actualScore, setActualScore] = useState(100000);
   const [displayScore, setDisplayScore] = useState(100000);
-  const [factories, setFactories] = useState(0);
-  const [levels, setLevels] = useState(
-    EdificiData.reduce((acc, building) => {
-      acc[building.levelKey] = 0;
-      return acc;
-    }, {})
-  );
-  const [costs, setCosts] = useState(
-    EdificiData.reduce((acc, building) => {
-      acc[building.levelKey] = building.cost;
-      return acc;
-    }, {})
-  );
 
   // Funzione per incrementare gradualmente lo score
   const incrementScoreGradually = useCallback(() => {
@@ -58,22 +53,86 @@ export const GameProvider = ({ children }) => {
     }
   }, [actualScore, displayScore]);
 
-  // Incrementa lo score in base alle fabbriche
+  // Incrementa lo score in base agli edifici
+  const [factories, setFactories] = useState(0);
+  const [levels, setLevels] = useState(
+    EdificiData.reduce((acc, building) => {
+      acc[building.levelKey] = 0;
+      return acc;
+    }, {})
+  );
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (factories > 0) {
         setActualScore((prevScore) => prevScore + factories);
       }
     }, 1000);
-
     return () => clearInterval(intervalId);
   }, [factories]);
+
+  useEffect(() => {
+    const totalFactories = EdificiData.reduce((total, building) => {
+      const level = levels[building.levelKey] || 0;
+      return total + building.increment * level;
+    }, 0);
+    setFactories(totalFactories);
+  }, [levels]);
 
   // Incrementa automaticamente lo score visualizzato
   useEffect(() => {
     const intervalId = setInterval(incrementScoreGradually, 50);
     return () => clearInterval(intervalId);
   }, [incrementScoreGradually]);
+
+  //sez EDIFICI
+
+  const [costs, setCosts] = useState(
+    EdificiData.reduce((acc, building) => {
+      acc[building.levelKey] = building.cost;
+      return acc;
+    }, {})
+  );
+
+  // Sezione ZAMPA
+  const [zampaLevels, setZampaLevels] = useState(0);
+  const [zampaCosts, setZampaCosts] = useState(50);
+  const [zampaIncrement, setZampaIncrement] = useState(2);
+  const [zampaClickValue, setZampaClickValue] = useState(1 + zampaLevels * 2);
+  const zampaClickValueRef = useRef(zampaClickValue);
+
+  // stellaboost
+  const [stellaBoostActive, setStellaBoostActive] = useState(false);
+
+  useEffect(() => {
+    setZampaClickValue(1 + zampaLevels * 2); // Aggiorna il valore quando zampaLevels cambia
+  }, [zampaLevels]);
+  // Funzione per il click di zampa
+  const zampaHandleClick = useCallback(() => {
+    // Calcola l'incremento basato sul boost stella
+    const baseIncrement = 1 + zampaLevels * 2;
+    const finalIncrement = stellaBoostActive
+      ? baseIncrement * 2 // Moltiplica per 2 durante il boost
+      : baseIncrement;
+
+    setActualScore((prevScore) => prevScore + finalIncrement);
+  }, [zampaLevels, stellaBoostActive]);
+
+  // Funzione per il level-up di zampa
+  const zampaHandleLevelUp = useCallback(() => {
+    if (actualScore >= zampaCosts) {
+      setZampaLevels((prevLevels) => prevLevels + 1);
+      setActualScore((prevScore) => prevScore - zampaCosts);
+      setZampaCosts((prevCosts) => Math.ceil(prevCosts * 1.5));
+    }
+  }, [actualScore, zampaCosts]);
+
+  useEffect(() => {
+    setZampaClickValue(1 + zampaLevels * 2); // Aggiorna il valore dinamicamente
+  }, [zampaLevels]);
+  useEffect(() => {
+    zampaClickValueRef.current = zampaClickValue; // Aggiorna il riferimento ogni volta che cambia
+  }, [zampaClickValue]);
 
   // Funzione per aumentare il livello di un edificio e aggiornare il costo
   const handleLevelUp = useCallback(
@@ -88,17 +147,6 @@ export const GameProvider = ({ children }) => {
       }));
     },
     [setLevels, setCosts]
-  );
-
-  // Funzione per gestire i click che incrementano il valore del punteggio
-  const handleClick = useCallback(
-    (building) => {
-      const currentLevel = levels[building.levelKey];
-      const clickValue =
-        building.baseClickIncrement + currentLevel * building.incrementPerLevel;
-      setActualScore((prevScore) => prevScore + clickValue);
-    },
-    [levels, setActualScore]
   );
 
   return (
@@ -117,7 +165,6 @@ export const GameProvider = ({ children }) => {
         levels,
         costs,
         handleLevelUp,
-        handleClick, // Esponi la funzione per l'utilizzo nei componenti
         upgrades,
         setUpgrades,
         counterRinascita,
@@ -126,6 +173,18 @@ export const GameProvider = ({ children }) => {
         setRinascitas,
         counterRinascitaProv,
         setCounterRinascitaProv,
+        // Esportazione specifica per zampa
+        zampaLevels,
+        zampaCosts,
+        zampaIncrement,
+        zampaClickValue,
+        setZampaClickValue,
+        setZampaIncrement,
+        zampaHandleClick,
+        zampaHandleLevelUp,
+        zampaClickValueRef,
+        stellaBoostActive,
+        setStellaBoostActive,
       }}
     >
       {children}

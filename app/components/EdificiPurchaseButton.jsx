@@ -14,9 +14,8 @@ export default function EdificiPurchase2({
 
   const handlePurchase = () => {
     if (canPurchase) {
-      setActualScore((prevScore) => prevScore - cost);
-      setFactories((prevFactories) => prevFactories + increment);
-      setLev((prevLev) => prevLev + 1);
+      setActualScore((prevScore) => prevScore - cost); // Riduce lo score
+      setLev((prevLev) => prevLev + 1); // Incrementa il livello dell'edificio
     }
   };
 

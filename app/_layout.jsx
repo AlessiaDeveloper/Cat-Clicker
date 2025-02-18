@@ -1,21 +1,16 @@
-import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import * as NavigationBar from "expo-navigation-bar";
 import { GameProvider } from "./store/GameProvider";
-
-SplashScreen.preventAutoHideAsync();
+import { BoostProvider } from "./store/BoostProvider";
 
 const RootLayout = () => {
   const [fontsLoaded, error] = useFonts({
     "Luckiest Guy": require("../assets/fonts/LuckiestGuy-Regular.ttf"),
   });
-  useEffect(() => {
-    if (error) throw error;
-    if (fontsLoaded) SplashScreen.hideAsync();
-  }, [fontsLoaded, error]);
+
   useEffect(() => {
     async function hideNavigationBar() {
       await NavigationBar.setVisibilityAsync("hidden");
@@ -23,17 +18,15 @@ const RootLayout = () => {
     }
     hideNavigationBar();
   }, []);
-  SplashScreen.preventAutoHideAsync();
 
   if (!fontsLoaded && !error) return null;
   return (
     <GameProvider>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen
-          name="index"
-          options={{ headerShown: false }}
-        ></Stack.Screen>
-      </Stack>
+      <BoostProvider>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index"></Stack.Screen>
+        </Stack>
+      </BoostProvider>
     </GameProvider>
   );
 };

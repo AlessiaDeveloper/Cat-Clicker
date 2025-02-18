@@ -1,4 +1,4 @@
-export const upgradeFunctions = {
+const upgradeFunctions = {
   1: (displayScore, setDisplayScore, actualScore, setActualScore) => {
     const croccantiniEarned = Math.floor(displayScore * 0.5);
 
@@ -28,3 +28,5 @@ export const upgradeFunctions = {
     });
   },
 };
+
+export default upgradeFunctions;

@@ -9,36 +9,35 @@ import { View, Pressable, Image, Animated, Easing } from "react-native";
 import ModalSettings from "../(modal)/ModalSettings";
 import ModalAchievment from "../(modal)/ModalAchievment";
 import GameContext from "../store/GameProvider";
+import BoostContext from "../store/BoostProvider";
 
-// Componente separato per l'animazione della zampa
 const PawEffect = React.memo(({ x, y, onFinish, clickValue }) => {
   const opacity = useRef(new Animated.Value(1)).current;
-  const scale = useRef(new Animated.Value(0.5)).current; // Inizia con un valore più basso
-  const translateY = useRef(new Animated.Value(0)).current; // Aggiunto per animare il valore
+  const scale = useRef(new Animated.Value(0.5)).current;
+  const translateY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Esegui l'animazione con easing per una transizione più fluida
     Animated.parallel([
       Animated.timing(opacity, {
         toValue: 0,
-        duration: 400, // Tempo di animazione ridotto per più reattività
-        easing: Easing.out(Easing.ease), // Migliora la fluidità
+        duration: 400,
+        easing: Easing.out(Easing.ease),
         useNativeDriver: true,
       }),
       Animated.timing(scale, {
-        toValue: 1, // Scala fino al valore finale
+        toValue: 1,
         duration: 400,
         easing: Easing.out(Easing.ease),
         useNativeDriver: true,
       }),
       Animated.timing(translateY, {
-        toValue: -30, // Il testo si sposta verso l'alto durante l'animazione
+        toValue: -30,
         duration: 400,
         easing: Easing.out(Easing.ease),
         useNativeDriver: true,
       }),
     ]).start(() => {
-      onFinish(); // Callback quando l'animazione termina
+      onFinish();
     });
   }, [opacity, scale, translateY, onFinish]);
 
@@ -64,11 +63,10 @@ const PawEffect = React.memo(({ x, y, onFinish, clickValue }) => {
         className="font-pregular text-secondary text-lg"
         style={{
           position: "absolute",
-          left: x + 10, // Regola la posizione per allineare al meglio il testo
-          top: y - 20, // Posiziona sopra la zampa
+          left: x + 10,
+          top: y - 20,
           opacity,
           transform: [{ translateY }],
-
           fontSize: 20,
         }}
       >
@@ -78,47 +76,48 @@ const PawEffect = React.memo(({ x, y, onFinish, clickValue }) => {
   );
 });
 
-function GattoClicker({ setActualScore }) {
+function GattoClicker() {
+  const { zampaClickValueRef, setActualScore, setDisplayScore } =
+    useContext(GameContext);
+  const { starBoostActive } = useContext(BoostContext);
   const [effects, setEffects] = useState([]);
   const nextId = useRef(0);
-  const {
-    levels,
-    setDisplayScore,
-    setActualScore: setActualScoreFromContext,
-  } = useContext(GameContext);
 
-  const addEffect = useCallback((x, y, clickValue) => {
-    const id = nextId.current++;
-    setEffects((currentEffects) => [
-      ...currentEffects,
-      { id, x, y, clickValue },
-    ]);
-  }, []);
+  const addEffect = useCallback(
+    (x, y) => {
+      const id = nextId.current++;
+      const clickValue = starBoostActive
+        ? zampaClickValueRef.current * 2
+        : zampaClickValueRef.current;
+
+      setEffects((currentEffects) => [
+        ...currentEffects,
+        { id, x, y, clickValue },
+      ]);
+    },
+    [starBoostActive, zampaClickValueRef]
+  );
 
   const handlePress = useCallback(
-    (e, building) => {
+    (e) => {
       const { pageX, pageY } = e.nativeEvent;
+      addEffect(pageX - 25, pageY - 25);
 
-      // Recupera il livello attuale del building (es. zampa)
-      const currentLevel = levels[building.levelKey];
-      const clickValue =
-        building.baseClickIncrement + currentLevel * building.incrementPerLevel; // Calcola il valore del click in base al livello
-
-      addEffect(pageX - 25, pageY - 25, clickValue); // Aggiungi effetto zampa con clickValue
-
-      setActualScore((current) => {
-        const newScore = current + clickValue; // Incrementa lo score con il valore calcolato
+      setActualScore((prevScore) => {
+        const increment = starBoostActive
+          ? zampaClickValueRef.current * 2
+          : zampaClickValueRef.current;
+        const newScore = prevScore + increment;
         setDisplayScore(newScore);
-        setActualScoreFromContext(newScore);
         return newScore;
       });
     },
     [
       addEffect,
-      levels,
+      starBoostActive,
+      zampaClickValueRef,
       setActualScore,
       setDisplayScore,
-      setActualScoreFromContext,
     ]
   );
 
@@ -129,21 +128,12 @@ function GattoClicker({ setActualScore }) {
   }, []);
 
   return (
-    <Pressable
-      onPress={(e) =>
-        handlePress(e, {
-          levelKey: "zampa", // Assumiamo che questo sia l'oggetto building per il click
-          baseClickIncrement: 1, // Valore di incremento base
-          incrementPerLevel: 1, // Valore di incremento per livello
-        })
-      }
-      style={styles.gattoClicker}
-    >
+    <Pressable onPress={handlePress} style={styles.gattoClicker}>
       <View style={styles.contentContainer}>
         <ModalSettings />
         <Image
           style={styles.image}
-          source={require("./../../assets/images/gatto2.0.png")}
+          source={require("../../assets/images/gatto2.0.png")}
         />
         <ModalAchievment />
       </View>

@@ -1,11 +1,12 @@
 {
   "expo": {
     "name": "Cat-CLicker",
-    "scheme": "Cat Clicker",
+    "scheme": "Cat-Clicker",
     "slug": "Cat-CLicker",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
+    "newArchEnabled": true,
     "splash": {
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
@@ -15,12 +16,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/scatoletta.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/images/favicon.png"
     },
     "plugins": ["expo-router"]
   }

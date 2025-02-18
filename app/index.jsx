@@ -1,6 +1,5 @@
-import { StatusBar } from "expo-status-bar";
-import { Text, View, ImageBackground, StyleSheet } from "react-native";
-import { Link, Redirect } from "expo-router";
+import { ImageBackground, StyleSheet } from "react-native";
+import { Redirect } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {

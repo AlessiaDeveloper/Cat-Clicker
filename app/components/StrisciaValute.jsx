@@ -4,11 +4,7 @@ import GameContext from "../store/GameProvider";
 import { useContext } from "react";
 
 const StrisciaValute = () => {
-  const {
-    scatolette,
-
-    counterRinascita,
-  } = useContext(GameContext);
+  const { scatolette, counterRinascita } = useContext(GameContext);
   return (
     <View className="flex flex-row justify-between border-b-2 bg-white border-primary w-full p-1">
       <Text className="text-lg font-pregular ml-2 text-primary">

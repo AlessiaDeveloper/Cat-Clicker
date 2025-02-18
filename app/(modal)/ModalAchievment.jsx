@@ -10,8 +10,6 @@ import {
   FlatList,
 } from "react-native";
 import GameContext from "../store/GameProvider";
-import Achievment from "../data/Achievment";
-import * as NavigationBar from "expo-navigation-bar";
 import EdificiData from "../data/EdificiData"; // Importa i dati degli edifici
 
 export default function ModalAchievment() {
@@ -60,7 +58,7 @@ export default function ModalAchievment() {
       }
     });
 
-    // Gli achievement claimabili sono messi in cima, seguiti da quelli non claimabili e infine da quelli già riscattati
+    // Gli achievement claimabili sono messi in cima, +
     return [...claimable, ...notClaimable, ...claimed];
   };
 
@@ -161,7 +159,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
-    shadowColor: "#000",
+    boxShadow: "#000",
     shadowOffset: {
       width: 0,
       height: 2,

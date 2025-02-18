@@ -1,27 +1,10 @@
 export default EdificiData = [
   {
-    id: "1",
-    name: "zampa",
-    image: require("./../../assets/images/zampa.png"),
-    cost: 50,
-    levelKey: "zampa", // Chiave per accedere al livello nel tuo stato
-    baseClickIncrement: 1, // Incremento di base per click
-    incrementPerLevel: 0.5, // Incremento per ogni livello aggiuntivo
-  },
-  {
-    id: "13",
-    name: "Bistrot",
-    image: require("./../../assets/images/bistrot.png"),
-    cost: 50,
-    increment: 1,
-    levelKey: "bistrot", // Chiave per accedere al livello nel tuo stato
-  },
-  {
     id: "2",
     name: "Red Dot Gym",
     image: require("./../../assets/images/gym.png"),
     cost: 100,
-    increment: 5,
+    increment: 1,
     levelKey: "gym",
   },
   {
@@ -29,7 +12,7 @@ export default EdificiData = [
     name: "kibble's Bank",
     image: require("./../../assets/images/bank.png"),
     cost: 300,
-    increment: 100,
+    increment: 2,
     levelKey: "bank",
   },
   {
@@ -37,7 +20,7 @@ export default EdificiData = [
     name: "Catnip Garden",
     image: require("./../../assets/images/garden.png"),
     cost: 10000,
-    increment: 10000,
+    increment: 3,
     levelKey: "garden",
   },
   {
@@ -103,5 +86,13 @@ export default EdificiData = [
     cost: 500000,
     increment: 500,
     levelKey: "taxiStation",
+  },
+  {
+    id: "13",
+    name: "Bistrot",
+    image: require("./../../assets/images/bistrot.png"),
+    cost: 500000,
+    increment: 1,
+    levelKey: "bistrot", // Chiave per accedere al livello nel tuo stato
   },
 ];
